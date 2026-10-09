@@ -17,7 +17,7 @@ export const navItems = [
   },
   {
     label: "Franchise",
-    path: "franchise",
+    id: "franchise",
     type: "section",
   },
   { label: "About", id: "about", type: "section" },
