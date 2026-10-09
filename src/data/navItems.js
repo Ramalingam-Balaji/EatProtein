@@ -1,8 +1,30 @@
-export const NAV_ITEMS = [
-  { label: "Home", target: "home" },
-  { label: "High Protein Foods", target: "foods" },
-  { label: "Protein Calculator", target: "calculator" },
-  { label: "How It Works", target: "how-it-works" },
-  { label: "Franchise", target: "franchise" },
-  { label: "About", target: "about" }
+export const navItems = [
+  { label: "Home", id: "home", type: "section" },
+  {
+    label: "High Protein Foods",
+    id: "high-protein-foods",
+    type: "section",
+  },
+  {
+    label: "Protein Calculator",
+    id: "protein-calculator",
+    type: "section",
+  },
+  {
+    label: "How It Works",
+    id: "how-it-works",
+    type: "section",
+  },
+  {
+    label: "Franchise",
+    path: "franchise",
+    type: "section",
+  },
+  { label: "About", id: "about", type: "section" },
 ];
+
+export const appPromoItem = {
+  label: "Download App",
+  id: "app-promo",
+  type: "section",
+};

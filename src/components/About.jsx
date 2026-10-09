@@ -1,12 +1,9 @@
+
 import {
-  Award,
   Heart,
   Leaf,
   ShieldCheck,
   Sparkles,
-  Users,
-  Store,
-  Trophy,
 } from "lucide-react";
 
 const STATS = [
@@ -55,47 +52,47 @@ export default function About() {
     <section
       id="about"
       className="
-        relative
-        overflow-hidden
+        relative overflow-hidden
         bg-gradient-to-br
-        from-[#f4fff0]
-        via-[#f8fff5]
-        to-[#effbe9]
-        px-4
-        py-16
+        from-[#f4fff0] via-[#f8fff5] to-[#effbe9]
+        px-4 py-16
         sm:px-6
-        lg:px-8
-        lg:py-3
+        lg:px-8 lg:py-12
       "
     >
       {/* Decorative background circles */}
-      <div className="pointer-events-none absolute -left-24 top-20 h-72 w-72 rounded-full bg-green-200/20 blur-3xl" />
+      <div
+        className="
+          pointer-events-none absolute
+          -left-24 top-20
+          h-72 w-72 rounded-full
+          bg-green-200/20 blur-3xl
+        "
+      />
 
-      <div className="pointer-events-none absolute -right-24 bottom-10 h-80 w-80 rounded-full bg-yellow-200/20 blur-3xl" />
+      <div
+        className="
+          pointer-events-none absolute
+          -right-24 bottom-10
+          h-80 w-80 rounded-full
+          bg-yellow-200/20 blur-3xl
+        "
+      />
 
       <div className="relative mx-auto max-w-[1400px]">
-        {/* =========================================
-            HEADER
-        ========================================= */}
 
+        {/* =====================================
+            HEADER
+        ===================================== */}
         <div className="mx-auto max-w-4xl text-center">
+
           <div
             className="
-              mx-auto
-              inline-flex
-              items-center
-              gap-2
-              rounded-full
-              border
-              border-green-200
-              bg-white/80
-              px-4
-              py-2
-              text-xs
-              font-bold
-              text-green-700
-              shadow-sm
-              backdrop-blur
+              mx-auto inline-flex items-center gap-2
+              rounded-full border border-green-200
+              bg-white/80 px-4 py-2
+              text-xs font-bold text-green-700
+              shadow-sm backdrop-blur
             "
           >
             <Sparkles size={15} />
@@ -104,14 +101,9 @@ export default function About() {
 
           <h2
             className="
-              mt-5
-              text-3xl
-              font-black
-              leading-tight
-              tracking-tight
-              text-slate-900
-              sm:text-4xl
-              lg:text-5xl
+              mt-5 text-3xl font-black
+              leading-tight tracking-tight text-slate-900
+              sm:text-4xl lg:text-5xl
             "
           >
             Nutrition That Fits
@@ -122,350 +114,320 @@ export default function About() {
 
           <p
             className="
-              mx-auto
-              mt-5
-              max-w-3xl
-              text-sm
-              leading-7
-              text-slate-600
-              sm:text-base
-              lg:text-lg
+              mx-auto mt-5 max-w-3xl
+              text-sm leading-7 text-slate-600
+              sm:text-base lg:text-lg
             "
           >
             Eat Protein is built with a simple mission — to make
-            nutritious, protein-rich food easier to discover, understand
-            and enjoy every day.
+            nutritious, protein-rich food easier to discover,
+            understand and enjoy every day.
           </p>
         </div>
 
-        {/* =========================================
-            STORY + QUALITY CARD
-        ========================================= */}
-
+        {/* =====================================
+            STORY + QUALITY CARDS
+            Side by side on desktop
+        ===================================== */}
         <div
           className="
-            mt-5
-            grid
-            grid-cols-1
-            gap-8
+            mt-8 grid grid-cols-1
+            items-stretch gap-6
             lg:grid-cols-2
-            lg:items-stretch
           "
         >
-          {/* =====================================
-              OUR STORY
-          ===================================== */}
 
+          {/* =====================================
+              LEFT CARD: STORY + STATISTICS
+          ===================================== */}
           <div
             className="
-              rounded-3xl
-              border
-              border-green-100
-              bg-white/80
-              p-6
+              flex h-full flex-col
+              rounded-3xl border border-green-100
+              bg-white/80 p-6
               shadow-[0_15px_50px_rgba(34,197,94,0.08)]
-              backdrop-blur
-              sm:p-8
-              lg:p-10
+              sm:p-8 lg:p-8
             "
           >
-            <div className="flex items-center gap-3">
+
+            {/* Story heading */}
+            <div className="flex items-center gap-4">
+
               <div
                 className="
-                  grid
-                  h-12
-                  w-12
-                  shrink-0
-                  place-items-center
-                  rounded-2xl
+                  grid h-14 w-14 shrink-0
+                  place-items-center rounded-2xl
                   bg-green-100
-                  text-protein-green
                 "
               >
-                <Leaf size={24} />
+                <Leaf
+                  size={28}
+                  className="text-green-700"
+                />
               </div>
 
               <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-green-600">
+                <p
+                  className="
+                    text-xs font-black uppercase
+                    tracking-widest text-green-600
+                  "
+                >
                   Our Story
                 </p>
 
-                <h3 className="mt-1 text-2xl font-black text-slate-900">
+                <h3
+                  className="
+                    mt-2 text-xl font-black
+                    leading-tight text-slate-900
+                    sm:text-2xl
+                  "
+                >
                   Making Healthy Eating Easier
                 </h3>
               </div>
             </div>
 
-            <div className="mt-7 space-y-5">
-              <p className="text-sm leading-7 text-slate-600 sm:text-base">
+            {/* Story paragraphs */}
+            <div
+              className="
+                mt-7 space-y-4
+                text-sm leading-7 text-slate-600
+                sm:text-base
+              "
+            >
+              <p>
                 We started Eat Protein with a simple belief:
-                everyone deserves access to nutritious, protein-rich
-                foods that support their health, fitness and everyday
-                lifestyle.
+                everyone deserves access to premium, protein-rich
+                foods that support their health, fitness and
+                everyday lifestyle.
               </p>
 
-              <p className="text-sm leading-7 text-slate-600 sm:text-base">
-                What began as a simple idea has grown into a platform
-                designed to help people discover better food choices,
-                understand nutrition and make informed decisions.
+              <p>
+                What began as a small initiative has grown into
+                a comprehensive platform offering the finest
+                selection of nuts, seeds, and protein food.
               </p>
 
-              <p className="text-sm leading-7 text-slate-600 sm:text-base">
-                From everyday nutrition to fitness-focused goals,
-                Eat Protein brings quality food and useful nutrition
-                insights together in one simple experience.
+              <p>
+                Our team of nutrition experts carefully curates
+                every product, ensuring you receive only the
+                highest quality, most nutritious options available.
               </p>
             </div>
 
-            {/* Mission */}
+            {/* Statistics: 2 columns × 2 rows */}
             <div
               className="
-                mt-8
-                rounded-2xl
-                bg-gradient-to-r
-                from-[#eefbea]
-                to-[#f8fff5]
-                p-5
+                mt-auto grid grid-cols-2
+                gap-3 pt-7 sm:gap-4
               "
             >
-              <div className="flex gap-4">
+              {STATS.map((stat) => (
                 <div
+                  key={stat.label}
                   className="
-                    grid
-                    h-10
-                    w-10
-                    shrink-0
-                    place-items-center
-                    rounded-xl
-                    bg-white
-                    text-protein-green
-                    shadow-sm
+                    flex min-h-[95px]
+                    flex-col items-center justify-center
+                    rounded-2xl border border-green-100
+                    bg-white/80 px-2 py-4 text-center
+                    shadow-sm transition-all duration-300
+                    hover:-translate-y-1 hover:shadow-lg
                   "
                 >
-                  <Heart size={19} />
-                </div>
+                  <p
+                    className={`
+                      text-2xl font-black sm:text-3xl
+                      ${stat.color}
+                    `}
+                  >
+                    {stat.value}
+                  </p>
 
-                <div>
-                  <h4 className="font-black text-slate-900">
-                    Our Mission
-                  </h4>
-
-                  <p className="mt-1 text-xs leading-5 text-slate-600 sm:text-sm">
-                    To make healthy, protein-rich food choices simple,
-                    accessible and enjoyable for everyone.
+                  <p
+                    className="
+                      mt-2 text-xs font-semibold
+                      text-slate-500 sm:text-sm
+                    "
+                  >
+                    {stat.label}
                   </p>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
 
           {/* =====================================
-              AWARD / QUALITY CARD
+              RIGHT CARD: QUALITY + IMAGE
           ===================================== */}
-
           <div
             className="
-              relative
-              overflow-hidden
-              rounded-3xl
+              relative isolate flex h-full
+              min-h-[520px] flex-col
+              items-center justify-center
+              overflow-hidden rounded-3xl
               bg-gradient-to-br
-              from-[#dff6c9]
-              via-[#eef4cf]
-              to-[#ffdba7]
-              p-6
+              from-[#dff6c9] via-[#eef4cf] to-[#ffdba7]
+              px-6 py-8
               shadow-[0_15px_50px_rgba(34,197,94,0.12)]
-              sm:p-8
-              lg:p-10
+              sm:px-8 sm:py-10 lg:px-8
             "
           >
+
             {/* Decorative circles */}
-            <div className="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-white/30" />
+            <div
+              className="
+                pointer-events-none absolute
+                -right-16 -top-16
+                h-48 w-48 rounded-full bg-white/30
+              "
+            />
 
-            <div className="absolute -bottom-20 -left-16 h-44 w-44 rounded-full bg-green-200/20" />
+            <div
+              className="
+                pointer-events-none absolute
+                -bottom-16 -left-16
+                h-44 w-44 rounded-full bg-green-200/30
+              "
+            />
 
-            <div className="relative flex h-full flex-col items-center justify-center text-center">
-              {/* Trophy */}
-              <div
-                className="
-                  grid
-                  h-24
-                  w-24
-                  place-items-center
-                  rounded-full
-                  bg-white/80
-                  shadow-lg
-                  backdrop-blur
-                "
-              >
-                <Trophy
-                  size={50}
-                  strokeWidth={2}
-                  className="text-yellow-500"
-                />
-              </div>
+            {/* Floating leaf icons */}
+            <Leaf
+              className="
+                pointer-events-none absolute
+                left-[10%] top-[15%]
+                h-8 w-8 -rotate-45
+                text-green-600/80
+              "
+              strokeWidth={1.8}
+            />
 
+            <Leaf
+              className="
+                pointer-events-none absolute
+                right-[12%] top-[20%]
+                h-10 w-10 rotate-45
+                text-green-600/80
+              "
+              strokeWidth={1.8}
+            />
+
+            <Leaf
+              className="
+                pointer-events-none absolute
+                bottom-[30%] left-[8%]
+                h-7 w-7 rotate-12
+                text-green-600/70
+              "
+              strokeWidth={1.8}
+            />
+
+            <Leaf
+              className="
+                pointer-events-none absolute
+                bottom-[30%] right-[8%]
+                h-8 w-8 -rotate-12
+                text-green-600/70
+              "
+              strokeWidth={1.8}
+            />
+
+            {/* Quality card content */}
+            <div
+              className="
+                relative z-10 flex w-full
+                flex-col items-center text-center
+              "
+            >
+
+              {/* Quality badge */}
               <span
                 className="
-                  mt-6
-                  rounded-full
-                  bg-white/70
-                  px-4
-                  py-2
-                  text-[10px]
-                  font-black
-                  uppercase
-                  tracking-widest
-                  text-green-700
+                  inline-flex items-center
+                  rounded-full bg-white/75
+                  px-5 py-2
+                  text-[10px] font-black
+                  uppercase tracking-[0.16em]
+                  text-green-700 shadow-sm
+                  sm:text-xs
                 "
               >
                 Quality First
               </span>
 
+              {/* Nuts and seeds image */}
+              <div
+                className="
+                  mt-5 flex w-full
+                  items-center justify-center
+                "
+              >
+                <img
+                  src="./assets/quality.png"
+                  alt="Premium nuts, seeds and protein-rich foods"
+                  className="
+                    h-auto w-full max-w-[480px]
+                    max-h-[280px] object-contain
+                    drop-shadow-[0_12px_18px_rgba(70,90,30,0.10)]
+                  "
+                  loading="lazy"
+                />
+              </div>
+
+              {/* Quality heading */}
               <h3
                 className="
-                  mt-4
-                  text-2xl
-                  font-black
-                  text-slate-900
-                  sm:text-3xl
+                  mt-5 text-2xl font-black
+                  leading-tight tracking-tight
+                  text-slate-900 sm:text-3xl
                 "
               >
                 Award-Winning Quality
               </h3>
 
+              {/* Quality description */}
               <p
                 className="
-                  mt-4
-                  max-w-md
-                  text-sm
-                  leading-6
-                  text-slate-700
+                  mt-4 max-w-md
+                  text-sm leading-7 text-slate-700
                   sm:text-base
                 "
               >
                 We believe better nutrition starts with better
-                ingredients. Every product is selected with quality,
-                nutrition and customer satisfaction in mind.
+                ingredients. Every product is selected with
+                quality, nutrition and customer satisfaction
+                in mind.
               </p>
-
-              {/* Quality badges */}
-              <div
-                className="
-                  mt-8
-                  grid
-                  w-full
-                  max-w-md
-                  grid-cols-3
-                  gap-3
-                "
-              >
-                <div
-                  className="
-                    rounded-2xl
-                    bg-white/70
-                    p-4
-                    backdrop-blur
-                  "
-                >
-                  <ShieldCheck
-                    className="mx-auto text-green-600"
-                    size={22}
-                  />
-
-                  <p className="mt-2 text-[10px] font-bold text-slate-700">
-                    Trusted
-                  </p>
-                </div>
-
-                <div
-                  className="
-                    rounded-2xl
-                    bg-white/70
-                    p-4
-                    backdrop-blur
-                  "
-                >
-                  <Leaf
-                    className="mx-auto text-green-600"
-                    size={22}
-                  />
-
-                  <p className="mt-2 text-[10px] font-bold text-slate-700">
-                    Nutritious
-                  </p>
-                </div>
-
-                <div
-                  className="
-                    rounded-2xl
-                    bg-white/70
-                    p-4
-                    backdrop-blur
-                  "
-                >
-                  <Heart
-                    className="mx-auto text-red-500"
-                    size={22}
-                  />
-
-                  <p className="mt-2 text-[10px] font-bold text-slate-700">
-                    Customer First
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </div>
 
-        {/* =========================================
-            STATISTICS
-        ========================================= */}
+        {/* =====================================
+            OPTIONAL FEATURES
+            Keep this section if you use FEATURES
+        ===================================== */}
+        {/*
+        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {FEATURES.map((feature) => {
+            const Icon = feature.icon;
 
-        <div
-          className="
-            mt-5
-            grid
-            grid-cols-2
-            gap-4
-            lg:grid-cols-4
-          "
-        >
-          {STATS.map((stat) => (
-            <div
-              key={stat.label}
-              className="
-                rounded-2xl
-                border
-                border-green-100
-                bg-white/80
-                px-4
-                py-6
-                text-center
-                shadow-sm
-                transition-all
-                duration-300
-                hover:-translate-y-1
-                hover:shadow-lg
-              "
-            >
-              <p
-                className={`
-                  text-3xl
-                  font-black
-                  sm:text-4xl
-                  ${stat.color}
-                `}
+            return (
+              <div
+                key={feature.title}
+                className="rounded-2xl border border-green-100 bg-white/80 p-5"
               >
-                {stat.value}
-              </p>
-
-              <p className="mt-2 text-xs font-semibold text-slate-500 sm:text-sm">
-                {stat.label}
-              </p>
-            </div>
-          ))}
+                <Icon size={26} className="text-green-600" />
+                <h3 className="mt-3 font-bold text-slate-900">
+                  {feature.title}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  {feature.text}
+                </p>
+              </div>
+            );
+          })}
         </div>
-
+        */}
       </div>
     </section>
   );

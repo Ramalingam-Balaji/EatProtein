@@ -12,12 +12,13 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 100px;
 }
 
 body {
   margin: 0;
   min-width: 320px;
-  background: white;
+  background: rgb(40, 34, 34);
 }
 
 button,
