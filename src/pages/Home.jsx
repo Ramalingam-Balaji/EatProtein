@@ -75,14 +75,15 @@ useEffect(() => {
           <HowItWorks />
         </section>
 
-        <section id="franchise" className="scroll-mt-24">
-          <FranchiseSection />
-        </section>
+        
 
         <section id="about" className="scroll-mt-24">
           <About />
         </section>
-
+      
+      <section id="franchise" className="scroll-mt-24">
+          <FranchiseSection />
+        </section>
         
       </main>
     </div>
