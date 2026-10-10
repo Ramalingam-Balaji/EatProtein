@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { CATEGORIES } from "../data/homeData";
 import SectionTag from "./SectionTag";
+import { Link } from "react-router-dom";
 
 export default function FoodCategories() {
   return (
@@ -17,9 +18,13 @@ export default function FoodCategories() {
               Explore a wide range of protein-rich foods available in stores near you. Each product comes with nutrition intelligence to help you make the right choice.
             </p>
           </div>
-          <button className="hidden shrink-0 items-center gap-1 text-xs font-bold text-protein-green sm:flex">
-            Explore All Foods <ArrowRight size={15} />
-          </button>
+          <Link
+  to="/food-stores"
+  className="inline-flex items-center gap-2 px-5 py-3 font-bold text-green-800 transition-colors duration-200 hover:text-green-400"
+>
+  Explore All Items
+  <ArrowRight size={18} />
+</Link>
         </div>
 
         <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4 lg:grid-cols-7">
