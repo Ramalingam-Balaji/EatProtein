@@ -432,540 +432,414 @@ export default function ProteinCalculator() {
             </div>
           </div>
 
-          {/* CALCULATOR CARD */}
-          <div
-            className="
-              mx-auto
-              w-full
-              max-w-[900px]
-              rounded-2xl
-              bg-white
-              p-3
-              shadow-card
-              sm:p-5
-            "
-          >
-            {/* PROFILE TABS */}
-            <div
-              className="
-                flex
-                gap-2
-                overflow-x-auto
-                pb-2
-                scrollbar-hide
-              "
-            >
-              {PROFILES.map((item) => {
-                const icon = PROFILE_ICONS[item] || "👤";
-                const selected = profile === item;
+         
+{/* CALCULATOR CARD */}
+<div
+  className="
+    mx-auto
+    w-full
+    max-w-[720px]
+    rounded-2xl
+    bg-white
+    p-2.5
+    shadow-card
+    sm:p-3
+  "
+>
+  {/* PROFILE TABS */}
+  <div
+    className="
+      flex
+      gap-1.5
+      overflow-x-auto
+      pb-1.5
+      scrollbar-hide
+    "
+  >
+    {PROFILES.map((item) => {
+      const icon = PROFILE_ICONS[item] || "👤";
+      const selected = profile === item;
 
-                return (
-                  <button
-                    key={item}
-                    type="button"
-                    onClick={() => handleProfileChange(item)}
-                    className={`
-                      flex
-                      min-w-[112px]
-                      flex-1
-                      items-center
-                      justify-center
-                      gap-2
-                      rounded-xl
-                      border
-                      px-1
-                      py-1
-                      text-sm
-                      font-semibold
-                      transition-all
-                      duration-200
-                      sm:min-w-[125px]
-                      sm:text-base
-                      ${
-                        selected
-                          ? "border-protein-green bg-protein-green text-white shadow-sm"
-                          : "border-slate-200 bg-white text-slate-700 hover:bg-green-50"
-                      }
-                    `}
-                  >
-                    <span className="text-2xl leading-none" aria-hidden="true">
-                      {icon}
-                    </span>
-                    <span>{item}</span>
-                  </button>
-                );
-              })}
-            </div>
+      return (
+        <button
+          key={item}
+          type="button"
+          onClick={() => handleProfileChange(item)}
+          className={`
+            flex
+            min-w-[90px]
+            flex-1
+            items-center
+            justify-center
+            gap-1.5
+            rounded-lg
+            border
+            px-1.5
+            py-2
+            text-xs
+            font-semibold
+            transition-all
+            duration-200
+            sm:min-w-0
+            sm:text-sm
+            ${
+              selected
+                ? "border-protein-green bg-protein-green text-white shadow-sm"
+                : "border-slate-200 bg-white text-slate-700 hover:bg-green-50"
+            }
+          `}
+        >
+          <span className="text-lg leading-none" aria-hidden="true">
+            {icon}
+          </span>
+          <span className="whitespace-nowrap">{item}</span>
+        </button>
+      );
+    })}
+  </div>
 
-            {/* KID GENDER */}
-            {profile === "Kid" && (
-              <div className="mt-4">
-                <p className="mb-3 text-lg font-bold text-slate-800">
-                  Select Gender
-                </p>
+  {/* KID GENDER */}
+  {profile === "Kid" && (
+    <div className="mt-3">
+      <p className="mb-2 text-sm font-bold text-slate-800">
+        Select Gender
+      </p>
 
-                <div className="grid grid-cols-2 gap-5">
-                  {[
-                    {
-                      value: "Boy",
-                      emoji: "👦",
-                    },
-                    {
-                      value: "Girl",
-                      emoji: "👧",
-                    },
-                  ].map((item) => {
-                    const selected = gender === item.value;
+      <div className="grid grid-cols-2 gap-3">
+        {[
+          { value: "Boy", emoji: "👦" },
+          { value: "Girl", emoji: "👧" },
+        ].map((item) => {
+          const selected = gender === item.value;
 
-                    return (
-                      <button
-                        key={item.value}
-                        type="button"
-                        onClick={() => {
-                          setGender(item.value);
-                          setResult((prev) => ({
-                            ...prev,
-                            calculated: false,
-                          }));
-                        }}
-                        className="flex flex-col items-center"
-                      >
-                        <div
-                          className={`
-                            grid
-                            h-24
-                            w-24
-                            place-items-center
-                            rounded-full
-                            border
-                            text-4xl
-                            shadow-sm
-                            transition-all
-                            sm:h-20
-                            sm:w-20
-                            ${
-                              selected
-                                ? "border-protein-green bg-protein-green"
-                                : "border-slate-200 bg-white"
-                            }
-                          `}
-                        >
-                          {item.emoji}
-                        </div>
-
-                        <span
-                          className={`
-                            mt-2
-                            text-base
-                            font-bold
-                            ${
-                              selected
-                                ? "text-protein-dark"
-                                : "text-slate-700"
-                            }
-                          `}
-                        >
-                          {item.value}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* AGE */}
-            <div
-              className={`
-                mt-2
-                rounded-2xl
-                border
-                border-slate-100
-                bg-white
-                p-4
-                shadow-sm
-              `}
-            >
-              <label className="block text-sm font-medium text-slate-500">
-                Age (YRS)
-
-                <select
-                  value={age}
-                  onChange={(e) => {
-                    setAge(Number(e.target.value));
-                    setResult((prev) => ({
-                      ...prev,
-                      calculated: false,
-                    }));
-                  }}
-                  className="
-                    mt-2
-                    h-10
-                    w-full
-                    rounded-xl
-                    border-0
-                    bg-slate-100
-                    px-3
-                    text-base
-                    font-medium
-                    text-slate-800
-                    outline-none
-                    focus:ring-2
-                    focus:ring-green-400
-                  "
-                >
-                  {Array.from({ length: 101 }, (_, index) => index).map(
-                    (value) => (
-                      <option key={value} value={value}>
-                        {value} years
-                      </option>
-                    )
-                  )}
-                </select>
-              </label>
-            </div>
-
-            {/* FOUR COLUMN CALCULATOR CARD */}
-            <div
-              className="
-                mt-2
-                grid
-                grid-cols-2
-                gap-3
-                lg:grid-cols-4
-              "
-            >
-              {/* HEIGHT */}
-              <div
-                className="
-                  rounded-2xl
-                  border
-                  border-slate-100
-                  bg-white
-                  p-3
-                  shadow-sm
-                "
-              >
-                <div className="flex min-h-[30px] items-center justify-between">
-                  <span className="text-sm font-semibold text-slate-600">
-                    Height
-                  </span>
-                  {/*<span className="text-protein-green">
-                    <UserRound size={20} />
-                  </span>*/}
-                </div>
-
-                <input
-                  type="number"
-                  min={heightUnit === "cm" ? 50 : 2}
-                  max={heightUnit === "cm" ? 249 : 11.9}
-                  step={heightUnit === "cm" ? 1 : 0.1}
-                  value={height}
-                  onChange={(e) => {
-                    setHeight(e.target.value);
-                    setResult((prev) => ({
-                      ...prev,
-                      calculated: false,
-                    }));
-                  }}
-                  className="
-                    mt-2
-                    h-11
-                    w-full
-                    rounded-xl
-                    bg-slate-100
-                    px-3
-                    text-base
-                    text-slate-800
-                    outline-none
-                    focus:ring-2
-                    focus:ring-green-400
-                  "
-                />
-
-                <div className="mt-2 flex items-center justify-between rounded-xl bg-slate-100 p-1">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (heightUnit !== "cm") {
-                        handleHeightUnitChange();
-                      }
-                    }}
-                    className={`
-                      flex-1
-                      rounded-lg
-                      py-1.5
-                      text-sm
-                      font-bold
-                      ${
-                        heightUnit === "cm"
-                          ? "bg-white text-protein-green shadow-sm"
-                          : "text-slate-500"
-                      }
-                    `}
-                  >
-                    CM
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (heightUnit !== "ft") {
-                        handleHeightUnitChange();
-                      }
-                    }}
-                    className={`
-                      flex-1
-                      rounded-lg
-                      py-1.5
-                      text-sm
-                      font-bold
-                      ${
-                        heightUnit === "ft"
-                          ? "bg-white text-protein-green shadow-sm"
-                          : "text-slate-500"
-                      }
-                    `}
-                  >
-                    FT
-                  </button>
-                </div>
-
-                {/*<p className="mt-1 text-[10px] text-slate-400">
-                  {heightUnit === "cm"
-                    ? "50–249 cm"
-                    : "2–11.9 ft"}
-                </p>*/}
-              </div>
-
-              {/* WEIGHT */}
-              <div
-                className="
-                  rounded-2xl
-                  border
-                  border-slate-100
-                  bg-white
-                  p-3
-                  shadow-sm
-                "
-              >
-                <div className="flex min-h-[30px] items-center justify-between">
-                  <span className="text-sm font-semibold text-slate-600">
-                    Weight
-                  </span>
-                  {/*<span className="text-protein-green">
-                    <Heart size={20} />
-                  </span>*/}
-                </div>
-
-                <input
-                  type="number"
-                  min={weightUnit === "kg" ? 10 : 20}
-                  max={weightUnit === "kg" ? 209 : 419}
-                  step="1"
-                  value={weight}
-                  onChange={(e) => {
-                    setWeight(e.target.value);
-                    setResult((prev) => ({
-                      ...prev,
-                      calculated: false,
-                    }));
-                  }}
-                  className="
-                    mt-2
-                    h-11
-                    w-full
-                    rounded-xl
-                    bg-slate-100
-                    px-3
-                    text-base
-                    text-slate-800
-                    outline-none
-                    focus:ring-2
-                    focus:ring-green-400
-                  "
-                />
-
-                <div className="mt-2 flex items-center justify-between rounded-xl bg-slate-100 p-1">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (weightUnit !== "kg") {
-                        handleWeightUnitChange();
-                      }
-                    }}
-                    className={`
-                      flex-1
-                      rounded-lg
-                      py-1.5
-                      text-sm
-                      font-bold
-                      ${
-                        weightUnit === "kg"
-                          ? "bg-white text-protein-green shadow-sm"
-                          : "text-slate-500"
-                      }
-                    `}
-                  >
-                    KG
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (weightUnit !== "lb") {
-                        handleWeightUnitChange();
-                      }
-                    }}
-                    className={`
-                      flex-1
-                      rounded-lg
-                      py-1.5
-                      text-sm
-                      font-bold
-                      ${
-                        weightUnit === "lb"
-                          ? "bg-white text-protein-green shadow-sm"
-                          : "text-slate-500"
-                      }
-                    `}
-                  >
-                    LB
-                  </button>
-                </div>
-
-                {/*<p className="mt-1 text-[10px] text-slate-400">
-                  {weightUnit === "kg"
-                    ? "10–209 kg"
-                    : "20–419 lb"}
-                </p>*/}
-              </div>
-
-              {/* BMI */}
-              <div
-                className="
-                  flex
-                  min-h-[170px]
-                  flex-col
-                  items-center
-                  rounded-2xl
-                  border
-                  border-slate-100
-                  bg-white
-                  p-3
-                  text-center
-                  shadow-sm
-                "
-              >
-                <div className="flex min-h-[30px] items-center justify-center text-blue-500">
-                  <BarChart3 size={23} />
-                </div>
-
-                <p className="mt-2 text-sm font-semibold text-slate-600">
-                  Your BMI
-                </p>
-
-                <p className="mt-3 text-3xl font-black text-blue-600">
-                  {result.bmi}
-                </p>
-
-                <span
-                  className={`
-                    mt-2
-                    rounded-full
-                    px-3
-                    py-1
-                    text-[10px]
-                    font-bold
-                    ${
-                      result.calculated
-                        ? "bg-blue-50 text-blue-600"
-                        : "bg-slate-100 text-slate-400"
-                    }
-                  `}
-                >
-                  {result.calculated ? result.status : "--"}
-                </span>
-              </div>
-
-              {/* DAILY PROTEIN */}
-              <div
-                className="
-                  flex
-                  min-h-[170px]
-                  flex-col
-                  items-center
-                  rounded-2xl
-                  border
-                  border-slate-100
-                  bg-white
-                  p-3
-                  text-center
-                  shadow-sm
-                "
-              >
-                <div className="flex min-h-[30px] items-center justify-center text-protein-green">
-                  <Heart size={23} />
-                </div>
-
-                <p className="mt-2 text-sm font-semibold text-slate-600">
-                  Daily Protein
-                </p>
-
-                <p className="mt-3 text-3xl font-black text-protein-green">
-                  {result.calculated
-                    ? `${result.protein}g`
-                    : "--"}
-                </p>
-
-                <p className="mt-1 text-[10px] text-slate-400">
-                  Recommended daily need
-                </p>
-              </div>
-            </div>
-
-            {/* CALCULATE BUTTON */}
+          return (
             <button
+              key={item.value}
               type="button"
-              onClick={handleCalculate}
-              className="
-                mt-5
-                flex
-                h-14
-                w-full
-                items-center
-                justify-center
-                gap-2
-                rounded-2xl
-                bg-protein-green
-                text-base
-                font-bold
-                text-white
-                shadow-sm
-                transition-all
-                duration-200
-                hover:bg-green-800
-                hover:shadow-md
-                active:scale-[0.99]
-              "
+              onClick={() => {
+                setGender(item.value);
+                setResult((prev) => ({
+                  ...prev,
+                  calculated: false,
+                }));
+              }}
+              className="flex flex-col items-center"
             >
-              Calculate
-              <ArrowRight size={18} />
-            </button>
+              <div
+                className={`
+                  grid
+                  h-14
+                  w-14
+                  place-items-center
+                  rounded-full
+                  border
+                  text-2xl
+                  shadow-sm
+                  transition-all
+                  ${
+                    selected
+                      ? "border-protein-green bg-protein-green"
+                      : "border-slate-200 bg-white"
+                  }
+                `}
+              >
+                {item.emoji}
+              </div>
 
-            <p
-              className="
-                mt-2
-                text-center
-                text-[8px]
-                leading-3
-                text-slate-400
-              "
-            >
-              Results are estimates. Consult a professional
-              for medical advice.
-            </p>
-          </div>
+              <span
+                className={`
+                  mt-1.5
+                  text-sm
+                  font-bold
+                  ${
+                    selected
+                      ? "text-protein-dark"
+                      : "text-slate-700"
+                  }
+                `}
+              >
+                {item.value}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  )}
+
+  {/* AGE */}
+  <div className="mt-2 rounded-xl border border-slate-100 bg-white p-2.5 shadow-sm">
+    <label className="block text-xs font-medium text-slate-500">
+      Age (YRS)
+
+      <select
+        value={age}
+        onChange={(e) => {
+          setAge(Number(e.target.value));
+          setResult((prev) => ({
+            ...prev,
+            calculated: false,
+          }));
+        }}
+        className="
+          mt-1.5
+          h-9
+          w-full
+          rounded-lg
+          border-0
+          bg-slate-100
+          px-2.5
+          text-sm
+          font-medium
+          text-slate-800
+          outline-none
+          focus:ring-2
+          focus:ring-green-400
+        "
+      >
+        {Array.from({ length: 101 }, (_, index) => index).map(
+          (value) => (
+            <option key={value} value={value}>
+              {value} years
+            </option>
+          )
+        )}
+      </select>
+    </label>
+  </div>
+
+  {/* HEIGHT, WEIGHT, BMI AND DAILY PROTEIN */}
+  <div className="mt-2 grid grid-cols-2 gap-2 lg:grid-cols-4">
+    {/* HEIGHT */}
+    <div className="min-w-0 rounded-xl border border-slate-100 bg-white p-2 shadow-sm">
+      <div className="flex min-h-6 items-center">
+        <span className="text-xs font-semibold text-slate-600">
+          Height
+        </span>
+      </div>
+
+      <input
+        type="number"
+        min={heightUnit === "cm" ? 50 : 2}
+        max={heightUnit === "cm" ? 249 : 11.9}
+        step={heightUnit === "cm" ? 1 : 0.1}
+        value={height}
+        onChange={(e) => {
+          setHeight(e.target.value);
+          setResult((prev) => ({
+            ...prev,
+            calculated: false,
+          }));
+        }}
+        className="
+          mt-1.5
+          h-9
+          w-full
+          min-w-0
+          rounded-lg
+          bg-slate-100
+          px-2
+          text-sm
+          text-slate-800
+          outline-none
+          focus:ring-2
+          focus:ring-green-400
+        "
+      />
+
+      <div className="mt-2 flex items-center rounded-lg bg-slate-100 p-0.5">
+        <button
+          type="button"
+          onClick={() => {
+            if (heightUnit !== "cm") handleHeightUnitChange();
+          }}
+          className={`
+            flex-1 rounded-md py-1.5 text-xs font-bold
+            ${
+              heightUnit === "cm"
+                ? "bg-white text-protein-green shadow-sm"
+                : "text-slate-500"
+            }
+          `}
+        >
+          CM
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            if (heightUnit !== "ft") handleHeightUnitChange();
+          }}
+          className={`
+            flex-1 rounded-md py-1.5 text-xs font-bold
+            ${
+              heightUnit === "ft"
+                ? "bg-white text-protein-green shadow-sm"
+                : "text-slate-500"
+            }
+          `}
+        >
+          FT
+        </button>
+      </div>
+    </div>
+
+    {/* WEIGHT */}
+    <div className="min-w-0 rounded-xl border border-slate-100 bg-white p-2 shadow-sm">
+      <div className="flex min-h-6 items-center">
+        <span className="text-xs font-semibold text-slate-600">
+          Weight
+        </span>
+      </div>
+
+      <input
+        type="number"
+        min={weightUnit === "kg" ? 10 : 20}
+        max={weightUnit === "kg" ? 209 : 419}
+        step="1"
+        value={weight}
+        onChange={(e) => {
+          setWeight(e.target.value);
+          setResult((prev) => ({
+            ...prev,
+            calculated: false,
+          }));
+        }}
+        className="
+          mt-1.5
+          h-9
+          w-full
+          min-w-0
+          rounded-lg
+          bg-slate-100
+          px-2
+          text-sm
+          text-slate-800
+          outline-none
+          focus:ring-2
+          focus:ring-green-400
+        "
+      />
+
+      <div className="mt-2 flex items-center rounded-lg bg-slate-100 p-0.5">
+        <button
+          type="button"
+          onClick={() => {
+            if (weightUnit !== "kg") handleWeightUnitChange();
+          }}
+          className={`
+            flex-1 rounded-md py-1.5 text-xs font-bold
+            ${
+              weightUnit === "kg"
+                ? "bg-white text-protein-green shadow-sm"
+                : "text-slate-500"
+            }
+          `}
+        >
+          KG
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            if (weightUnit !== "lb") handleWeightUnitChange();
+          }}
+          className={`
+            flex-1 rounded-md py-1.5 text-xs font-bold
+            ${
+              weightUnit === "lb"
+                ? "bg-white text-protein-green shadow-sm"
+                : "text-slate-500"
+            }
+          `}
+        >
+          LB
+        </button>
+      </div>
+    </div>
+
+    {/* BMI */}
+    <div className="flex min-w-0 min-h-[125px] flex-col items-center rounded-xl border border-slate-100 bg-white p-2 text-center shadow-sm">
+      <div className="flex min-h-6 items-center justify-center text-blue-500">
+        <BarChart3 size={19} />
+      </div>
+
+      <p className="mt-1.5 text-xs font-semibold text-slate-600">
+        Your BMI
+      </p>
+
+      <p className="mt-2 text-2xl font-black text-blue-600">
+        {result.bmi}
+      </p>
+
+      <span
+        className={`
+          mt-1.5 rounded-full px-2 py-1 text-[9px] font-bold
+          ${
+            result.calculated
+              ? "bg-blue-50 text-blue-600"
+              : "bg-slate-100 text-slate-400"
+          }
+        `}
+      >
+        {result.calculated ? result.status : "--"}
+      </span>
+    </div>
+
+    {/* DAILY PROTEIN */}
+    <div className="flex min-w-0 min-h-[125px] flex-col items-center rounded-xl border border-slate-100 bg-white p-2 text-center shadow-sm">
+      <div className="flex min-h-6 items-center justify-center text-protein-green">
+        <Heart size={19} />
+      </div>
+
+      <p className="mt-1.5 text-xs font-semibold text-slate-600">
+        Daily Protein
+      </p>
+
+      <p className="mt-2 text-2xl font-black text-protein-green">
+        {result.calculated ? `${result.protein}g` : "--"}
+      </p>
+
+      <p className="mt-1 text-[9px] leading-3 text-slate-400">
+        Recommended daily need
+      </p>
+    </div>
+  </div>
+
+  {/* CALCULATE BUTTON */}
+  <button
+    type="button"
+    onClick={handleCalculate}
+    className="
+      mt-3
+      flex
+      h-10
+      w-full
+      items-center
+      justify-center
+      gap-2
+      rounded-xl
+      bg-protein-green
+      text-sm
+      font-bold
+      text-white
+      shadow-sm
+      transition-all
+      duration-200
+      hover:bg-green-800
+      hover:shadow-md
+      active:scale-[0.99]
+    "
+  >
+    Calculate
+    <ArrowRight size={16} />
+  </button>
+
+  <p className="mt-1.5 text-center text-[8px] leading-3 text-slate-400">
+    Results are estimates. Consult a professional for medical advice.
+  </p>
+</div>
+
         </div>
       </div>
     </section>

@@ -5,10 +5,12 @@ import Franchise from "./pages/Franchise";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 
 export default function AppRoutes() {
   return (
     <div className="flex min-h-screen flex-col">
+      <ScrollToTop />
       <Navbar />
 
       <div className="flex-1">
