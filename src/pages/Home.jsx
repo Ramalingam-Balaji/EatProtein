@@ -8,6 +8,7 @@ import AppPromo from "../components/AppPromo";
 import HowItWorks from "../components/HowItWorks";
 import FranchiseSection from "../components/FranchiseSection";
 import About from "../components/About";
+import Refer from "../components/Refer";
 
 export default function Home() {
   const location = useLocation();
@@ -79,6 +80,9 @@ useEffect(() => {
 
         <section id="about" className="scroll-mt-24">
           <About />
+        </section>
+        <section id="refer" className="scroll-mt-24">
+          <Refer />
         </section>
       
       <section id="franchise" className="scroll-mt-24">

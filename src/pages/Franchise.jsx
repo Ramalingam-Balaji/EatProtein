@@ -197,8 +197,7 @@ export default function Franchise() {
       ====================================== */}
       <section
         id="franchise"
-        className="relative bg-gradient-to-br from-[#f0fff1] via-[#fbfff8] to-[#eaf5ff]"
-      >
+        className="relative bg-gradient-to-br from-[#f0fff1] via-[#fbfff8] to-[#eaf5ff]">
         <div className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-green-200/25 blur-3xl" />
         <div className="pointer-events-none absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-yellow-200/25 blur-3xl" />
 

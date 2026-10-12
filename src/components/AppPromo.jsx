@@ -17,7 +17,7 @@ export default function AppPromo() {
           <div className="mt-5 flex flex-wrap gap-3">
   {/* App Store */}
   <a
-    href="https://apps.apple.com/us/search?term=EatProtein"
+    href="https://apps.apple.com/in/app/eat-protein/id6636532383"
     target="_blank"
     rel="noopener noreferrer"
     className="flex items-center gap-2 rounded-lg bg-black px-4 py-2 text-left text-white transition duration-200 hover:-translate-y-1 hover:bg-gray-900"
@@ -37,7 +37,7 @@ export default function AppPromo() {
 
   {/* Google Play */}
   <a
-    href="https://play.google.com/store/search?q=EatProtein&c=apps"
+    href="https://play.google.com/store/apps/details?id=com.mannschaft.eatprotien"
     target="_blank"
     rel="noopener noreferrer"
     className="flex items-center gap-2 rounded-lg bg-black px-4 py-2 text-left text-white transition duration-200 hover:-translate-y-1 hover:bg-gray-900"

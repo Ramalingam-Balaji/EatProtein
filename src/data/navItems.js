@@ -1,7 +1,7 @@
 export const navItems = [
   { label: "Home", id: "home", type: "section" },
   {
-    label: "High Protein Foods",
+    label: "Protein Foods",
     id: "high-protein-foods",
     type: "section",
   },
@@ -20,7 +20,18 @@ export const navItems = [
     id: "franchise",
     type: "section",
   },
+  {
+    label: "Store",
+    path: "/store-registration",
+    type: "route",
+  },
   { label: "About", id: "about", type: "section" },
+   { label: "Refer A Friend", id: "refer", type: "section" },
+  {
+    label: "Contact Us",
+    path: "/contact",
+    type: "route",
+  },
 ];
 
 export const appPromoItem = {

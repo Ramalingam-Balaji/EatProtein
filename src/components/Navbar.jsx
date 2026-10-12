@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, Download } from "lucide-react";
@@ -13,6 +14,8 @@ export default function Navbar() {
 
   // Scroll to a section on the Home page
   const scrollToSection = (target) => {
+    if (!target) return;
+
     const section = document.getElementById(target);
 
     if (section) {
@@ -23,8 +26,24 @@ export default function Navbar() {
     }
   };
 
+  // Handle navigation to a page route
+  const handleRouteClick = (path) => {
+    if (!path) return;
+
+    setMobileMenuOpen(false);
+
+    // Navigate directly to the requested route
+    navigate(path);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   // Handle section navigation from any page
   const handleSectionClick = (target) => {
+    if (!target) return;
+
     setMobileMenuOpen(false);
 
     if (location.pathname !== "/") {
@@ -37,7 +56,16 @@ export default function Navbar() {
     scrollToSection(target);
   };
 
-  // Scroll after navigating back to the Home page
+  // Handle each navigation item based on its type
+  const handleNavigation = (item) => {
+    if (item.type === "route") {
+      handleRouteClick(item.path);
+    } else if (item.type === "section") {
+      handleSectionClick(item.id);
+    }
+  };
+
+  // Scroll to a Home section after navigating from another page
   useEffect(() => {
     const target = location.state?.scrollTo;
 
@@ -45,24 +73,38 @@ export default function Navbar() {
       return;
     }
 
-    const frame = requestAnimationFrame(() => {
-      scrollToSection(target);
+    let frame;
 
-      // Clear the pending scroll request
-      window.history.replaceState(
-        window.history.state,
-        "",
-        window.location.pathname + window.location.search
-      );
-    });
+    // Wait for the Home page sections to render
+    const timeout = window.setTimeout(() => {
+      frame = window.requestAnimationFrame(() => {
+        scrollToSection(target);
 
-    return () => cancelAnimationFrame(frame);
-  }, [location.pathname, location.state]);
+        // Clear the pending navigation state
+        navigate("/", {
+          replace: true,
+          state: {},
+        });
+      });
+    }, 50);
+
+    return () => {
+      window.clearTimeout(timeout);
+
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
+    };
+  }, [location.pathname, location.state, navigate]);
+
+  // Handle the Download App button
+  const handleAppClick = () => {
+    handleSectionClick(appPromoItem.id);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-green-100/20 bg-white/95 shadow-sm backdrop-blur-md">
       <nav className="mx-auto flex min-h-[76px] max-w-[1450px] items-center justify-between gap-5 px-5 py-3 lg:px-8">
-
         {/* Logo */}
         <button
           type="button"
@@ -83,7 +125,7 @@ export default function Navbar() {
             <button
               key={item.label}
               type="button"
-              onClick={() => handleSectionClick(item.id)}
+              onClick={() => handleNavigation(item)}
               className="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold text-gray-700 transition-colors duration-200 hover:bg-green-50 hover:text-green-700 xl:px-4"
             >
               {item.label}
@@ -91,10 +133,10 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Download App Button */}
+        {/* Desktop Download App Button */}
         <button
           type="button"
-          onClick={() => handleSectionClick(appPromoItem.id)}
+          onClick={handleAppClick}
           className="hidden shrink-0 items-center gap-2 rounded-full bg-green-600 px-5 py-3 text-sm font-bold text-white shadow-md transition-all duration-200 hover:bg-green-700 hover:shadow-lg sm:flex"
         >
           <Download size={17} />
@@ -121,7 +163,7 @@ export default function Navbar() {
               <button
                 key={item.label}
                 type="button"
-                onClick={() => handleSectionClick(item.id)}
+                onClick={() => handleNavigation(item)}
                 className="w-full rounded-lg px-4 py-3 text-left text-sm font-semibold text-gray-700 transition-colors hover:bg-green-50 hover:text-green-700"
               >
                 {item.label}
@@ -131,7 +173,7 @@ export default function Navbar() {
             {/* Mobile Download App */}
             <button
               type="button"
-              onClick={() => handleSectionClick(appPromoItem.id)}
+              onClick={handleAppClick}
               className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-green-600 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-green-700"
             >
               <Download size={17} />
@@ -143,4 +185,3 @@ export default function Navbar() {
     </header>
   );
 }
-

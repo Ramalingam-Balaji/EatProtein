@@ -163,7 +163,7 @@ export default function FoodStores() {
             {topRatedStores.map((store) => (
               <Link
                 key={`${store.categorySlug}-${store.name}`}
-                to={`/food-stores/${store.categorySlug}`}
+                to={`/food-stores/${store.categorySlug}/${encodeURIComponent(store.name)}`}
                 className="group w-[235px] shrink-0 snap-start overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg sm:w-[260px] lg:w-[calc((100%-3rem)/4)]"
               >
                 <div className="relative h-40 overflow-hidden sm:h-44">
@@ -336,25 +336,7 @@ export default function FoodStores() {
           </div>
         </section>
 
-        {/* Browse all categories */}
-        <section className="rounded-2xl border border-[#d9ecdc] bg-[#f0f8ef] p-5 sm:flex sm:items-center sm:justify-between sm:gap-5 sm:p-7">
-          <div>
-            <h2 className="text-xl font-extrabold text-[#075c40]">
-              Explore all food categories
-            </h2>
-            <p className="mt-2 text-sm text-gray-600">
-              Discover fresh food, local stores and healthier choices.
-            </p>
-          </div>
-
-          <Link
-            to="/food-stores/veg"
-            className="mt-4 inline-flex shrink-0 items-center gap-2 rounded-full bg-[#087b4b] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#075c40] sm:mt-0"
-          >
-            Explore Categories
-            <ArrowRight size={17} />
-          </Link>
-        </section>
+       
       </div>
     </main>
   );
