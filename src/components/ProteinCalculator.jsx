@@ -61,12 +61,14 @@ export default function ProteinCalculator() {
   };
 
   const getProfileAgeMessage = (selectedProfile, ageValue) => {
-    if (selectedProfile === "Adult" && ageValue < 20) {
-      return "For the Adult profile, age must be 20 years or above.";
+    const adultProfiles = ["Adult", "Pregnant Woman", "Feeding Mother", "Bodybuilder"];
+
+    if (adultProfiles.includes(selectedProfile) && ageValue < 20) {
+      return `For the ${selectedProfile} profile, age must be 20 years or above.`;
     }
 
-    if (selectedProfile === "Kid" && ageValue > 15) {
-      return "For the Kid profile, age must be 15 years or below.";
+    if (selectedProfile === "Kid" && ageValue > 19) {
+      return "For the Kid profile, age must be 19 years or below.";
     }
 
     return "";
@@ -204,11 +206,11 @@ export default function ProteinCalculator() {
     const activityFactor = Number(activityData?.factor ?? 1.2);
 
     const profileProteinFactors = {
-      Adult: 1,
-      Kid: 1,
-      "Pregnant Woman": 1.15,
-      "Feeding Mother": 1.25,
-      Bodybuilder: 1.45,
+      Adult: 0.8,
+      Kid: 2,
+      "Pregnant Woman": 1.5,
+      "Feeding Mother": 1.5,
+      Bodybuilder: 1.7,
     };
     const profileFactor = profileProteinFactors[profile] ?? 1;
 
@@ -224,7 +226,7 @@ export default function ProteinCalculator() {
 
     const protein = Math.max(
       1,
-      Math.round(weightKg * activityFactor * profileFactor * ageFactor)
+      Math.round(weightKg  * profileFactor )
     );
 
     setResult({
@@ -349,7 +351,7 @@ export default function ProteinCalculator() {
               className="
                 mt-3
                 max-w-[430px]
-                text-[13px]
+                text-[15px]
                 leading-5
                 text-slate-600
                 sm:text-sm
@@ -404,11 +406,11 @@ export default function ProteinCalculator() {
                   <p
                     className="
                       mt-2
-                      text-[8px]
+                      text-[10px]
                       font-bold
                       leading-3
                       text-slate-700
-                      sm:text-[9px]
+                      sm:text-[10px]
                     "
                   >
                     {title}
@@ -421,7 +423,7 @@ export default function ProteinCalculator() {
                         font-bold
                         leading-3
                         text-slate-700
-                        sm:text-[9px]
+                        sm:text-[10px]
                       "
                     >
                       {subtitle}
@@ -438,7 +440,7 @@ export default function ProteinCalculator() {
   className="
     mx-auto
     w-full
-    max-w-[720px]
+    max-w-[620px]
     rounded-2xl
     bg-white
     p-2.5
@@ -845,3 +847,5 @@ export default function ProteinCalculator() {
     </section>
   );
 }
+
+

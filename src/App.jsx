@@ -13,20 +13,27 @@ import ScrollToTop from "./components/ScrollToTop";
 
 export default function AppRoutes() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen w-full min-w-0 flex-col bg-white">
       <ScrollToTop />
+
       <Navbar />
 
-      <div className="flex-1">
+      <main className="w-full min-w-0 flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
-           <Route path="/food-stores" element={<FoodStores />} />
-           <Route path="/food-stores/:category" element={<CategoryStores />}/>
-            <Route path="/store-registration" element={<Store />} />
+          <Route path="/food-stores" element={<FoodStores />} />
+          <Route
+            path="/food-stores/:category"
+            element={<CategoryStores />}
+          />
+          <Route
+            path="/store-registration"
+            element={<Store />}
+          />
           <Route path="/franchise" element={<Franchise />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
-      </div>
+      </main>
 
       <Footer />
     </div>

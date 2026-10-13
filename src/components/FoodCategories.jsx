@@ -12,33 +12,38 @@ export default function FoodCategories() {
       className="scroll-mt-20 bg-white px-5 py-7"
     >
       <div className="mx-auto max-w-[1400px]">
-        {/* Section heading */}
-        <div className="flex items-end justify-between gap-5">
-          <div>
+        {/* Responsive Section Heading */}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-5">
+          {/* Heading and Description */}
+          <div className="min-w-0 flex-1">
             <SectionTag>Discover & Choose</SectionTag>
 
             <h2 className="mt-3 text-[28px] font-black leading-tight text-protein-dark sm:text-[31px]">
               High Protein Foods from Local Stores
             </h2>
 
-            <p className="mt-1 max-w-[700px] text-sm text-slate-600">
+            <p className="mt-1 max-w-[700px] text-sm leading-relaxed text-slate-600">
               Explore a wide range of protein-rich foods available in
               stores near you. Each product comes with nutrition
               intelligence to help you make the right choice.
             </p>
           </div>
 
-          {/* Explore all items link */}
-          <Link
-            to="/food-stores"
-            className="inline-flex shrink-0 items-center gap-2 px-5 py-3 font-bold text-green-800 transition-colors duration-200 hover:text-green-500"
-          >
-            Explore All Items
-            <ArrowRight size={18} />
-          </Link>
+          {/* Explore All Items Link */}
+          <div className="flex justify-end sm:shrink-0">
+            <Link
+              to="/food-stores"
+              className="inline-flex items-center gap-2 py-2 font-bold text-green-800 transition-colors duration-200 hover:text-green-500"
+            >
+              <span className="whitespace-nowrap">
+                Explore All Items
+              </span>
+              <ArrowRight size={18} />
+            </Link>
+          </div>
         </div>
 
-        {/* Food category cards */}
+        {/* Food Category Cards */}
         <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4 lg:grid-cols-7">
           {CATEGORIES.map((category) => (
             <button
@@ -48,7 +53,7 @@ export default function FoodCategories() {
               aria-label={`Explore ${category.title}`}
               className="group overflow-hidden rounded-xl border border-slate-100 bg-white shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-green-500"
             >
-              {/* Category image */}
+              {/* Category Image */}
               <div className="h-[110px] overflow-hidden bg-slate-50">
                 <img
                   src={category.image}
@@ -58,7 +63,7 @@ export default function FoodCategories() {
                 />
               </div>
 
-              {/* Category title */}
+              {/* Category Title */}
               <div className="flex min-h-[50px] items-center justify-center p-2 text-center">
                 <span className="text-[10px] font-bold leading-3 text-slate-800">
                   {category.title}
