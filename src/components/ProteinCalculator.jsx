@@ -1,21 +1,797 @@
+
+// import {
+//   ArrowRight,
+//   BarChart3,
+//   Heart,
+//   Leaf,
+//   UserRound,
+//   Baby,
+//   HeartHandshake,
+//   PersonStanding,
+//   Dumbbell,
+//   UserRoundCheck,
+// } from "lucide-react";
+// import { useState } from "react";
+
+
+// import { ACTIVITY_LEVELS, PROFILES } from "../data/homeData";
+// import SectionTag from "./SectionTag";
+
+// const PROFILE_ICONS = {
+//   Adult: UserRound,
+//   Kid: Baby,
+//   "Pregnant Woman": PersonStanding,
+//   "Feeding Mother": HeartHandshake,
+//   Bodybuilder: Dumbbell,
+// };
+
+// const GENDER_ICONS = {
+//   Boy: UserRoundCheck,
+//   Girl: UserRound,
+// };
+
+// export default function ProteinCalculator() {
+//   // --------------------------------
+//   // FORM STATES
+//   // --------------------------------
+//   const [profile, setProfile] = useState("Adult");
+//   const [age, setAge] = useState(25);
+
+//   const [heightUnit, setHeightUnit] = useState("cm");
+//   const [height, setHeight] = useState(170);
+
+//   const [weightUnit, setWeightUnit] = useState("kg");
+//   const [weight, setWeight] = useState(20);
+
+//   const [gender, setGender] = useState("Boy");
+
+//   const [activity] = useState(
+//     ACTIVITY_LEVELS?.[2]?.label ||
+//       ACTIVITY_LEVELS?.[0]?.label ||
+//       ""
+//   );
+
+//   // --------------------------------
+//   // RESULT STATE
+//   // --------------------------------
+//   const [result, setResult] = useState({
+//     bmi: "--",
+//     protein: "--",
+//     status: "",
+//     calculated: false,
+//   });
+
+//   // --------------------------------
+//   // HELPERS
+//   // --------------------------------
+//   const showValidationMessage = (message) => {
+//     alert(message);
+//   };
+
+//   const getProfileAgeMessage = (selectedProfile, ageValue) => {
+//     const adultProfiles = [
+//       "Adult",
+//       "Pregnant Woman",
+//       "Feeding Mother",
+//       "Bodybuilder",
+//     ];
+
+//     if (adultProfiles.includes(selectedProfile) && ageValue < 20) {
+//       return `For the ${selectedProfile} profile, age must be 20 years or above.`;
+//     }
+
+//     if (selectedProfile === "Kid" && ageValue > 19) {
+//       return "For the Kid profile, age must be 19 years or below.";
+//     }
+
+//     return "";
+//   };
+
+//   const getHeightCm = () => {
+//     const value = Number(height);
+
+//     if (heightUnit === "cm") {
+//       return value;
+//     }
+
+//     return value * 30.48;
+//   };
+
+//   const getWeightKg = () => {
+//     const value = Number(weight);
+
+//     if (weightUnit === "kg") {
+//       return value;
+//     }
+
+//     return value * 0.45359237;
+//   };
+
+//   const validateForm = () => {
+//     const ageValue = Number(age);
+//     const heightValue = Number(height);
+//     const weightValue = Number(weight);
+
+//     if (!Number.isFinite(ageValue)) {
+//       showValidationMessage("Please select a valid age.");
+//       return false;
+//     }
+
+//     const ageMessage = getProfileAgeMessage(profile, ageValue);
+
+//     if (ageMessage) {
+//       showValidationMessage(ageMessage);
+//       return false;
+//     }
+
+//     if (!Number.isFinite(heightValue) || heightValue <= 0) {
+//       showValidationMessage("Please enter a valid height.");
+//       return false;
+//     }
+
+//     if (
+//       heightUnit === "cm" &&
+//       (heightValue < 50 || heightValue > 249)
+//     ) {
+//       showValidationMessage("Height must be between 50 and 249 cm.");
+//       return false;
+//     }
+
+//     if (
+//       heightUnit === "ft" &&
+//       (heightValue < 2 || heightValue > 11.9)
+//     ) {
+//       showValidationMessage("Height must be between 2 and 11.9 ft.");
+//       return false;
+//     }
+
+//     if (!Number.isFinite(weightValue) || weightValue <= 0) {
+//       showValidationMessage("Please enter a valid weight.");
+//       return false;
+//     }
+
+//     if (
+//       weightUnit === "kg" &&
+//       (weightValue < 10 || weightValue > 209)
+//     ) {
+//       showValidationMessage("Weight must be between 10 and 209 kg.");
+//       return false;
+//     }
+
+//     if (
+//       weightUnit === "lb" &&
+//       (weightValue < 20 || weightValue > 419)
+//     ) {
+//       showValidationMessage("Weight must be between 20 and 419 lb.");
+//       return false;
+//     }
+
+//     return true;
+//   };
+
+//   // --------------------------------
+//   // CALCULATE RESULTS
+//   // --------------------------------
+//   const handleCalculate = () => {
+//     if (!validateForm()) return;
+
+//     const heightCm = getHeightCm();
+//     const weightKg = getWeightKg();
+
+//     if (!heightCm || !weightKg) {
+//       showValidationMessage("Please enter valid height and weight.");
+//       return;
+//     }
+
+//     const heightM = heightCm / 100;
+//     const bmi = weightKg / (heightM * heightM);
+
+//     let status = "";
+
+//     if (bmi < 18.5) {
+//       status = "Underweight";
+//     } else if (bmi < 25) {
+//       status = "Normal";
+//     } else if (bmi < 30) {
+//       status = "Overweight";
+//     } else {
+//       status = "High";
+//     }
+
+//     const activityData = ACTIVITY_LEVELS?.find(
+//       (item) => item.label === activity
+//     );
+
+//     const activityFactor = Number(activityData?.factor ?? 1.2);
+
+//     const profileProteinFactors = {
+//       Adult: 0.8,
+//       Kid: 2,
+//       "Pregnant Woman": 1.5,
+//       "Feeding Mother": 1.5,
+//       Bodybuilder: 1.7,
+//     };
+
+//     const profileFactor = profileProteinFactors[profile] ?? 1;
+
+//     const ageValue = Number(age);
+//     let ageFactor = 1;
+
+//     if (profile === "Kid" && ageValue > 0 && ageValue <= 3) {
+//       ageFactor = 1.1;
+//     }
+
+//     const protein = Math.max(
+//       1,
+//       Math.round(weightKg * profileFactor)
+//     );
+
+//     setResult({
+//       bmi: bmi.toFixed(1),
+//       protein,
+//       status,
+//       calculated: true,
+//     });
+//   };
+
+//   // --------------------------------
+//   // PROFILE CHANGE
+//   // --------------------------------
+//   const handleProfileChange = (item) => {
+//     setProfile(item);
+
+//     setResult({
+//       bmi: "--",
+//       protein: "--",
+//       status: "",
+//       calculated: false,
+//     });
+//   };
+
+//   // --------------------------------
+//   // HEIGHT UNIT CHANGE
+//   // --------------------------------
+//   const handleHeightUnitChange = () => {
+//     if (heightUnit === "cm") {
+//       const feetValue = Number(height) / 30.48;
+//       setHeight(Number(feetValue.toFixed(1)));
+//       setHeightUnit("ft");
+//     } else {
+//       const cmValue = Number(height) * 30.48;
+//       setHeight(Math.round(cmValue));
+//       setHeightUnit("cm");
+//     }
+
+//     setResult((prev) => ({
+//       ...prev,
+//       calculated: false,
+//     }));
+//   };
+
+//   // --------------------------------
+//   // WEIGHT UNIT CHANGE
+//   // --------------------------------
+//   const handleWeightUnitChange = () => {
+//     if (weightUnit === "kg") {
+//       const lbValue = Number(weight) / 0.45359237;
+//       setWeight(Math.round(lbValue));
+//       setWeightUnit("lb");
+//     } else {
+//       const kgValue = Number(weight) * 0.45359237;
+//       setWeight(Math.round(kgValue));
+//       setWeightUnit("kg");
+//     }
+
+//     setResult((prev) => ({
+//       ...prev,
+//       calculated: false,
+//     }));
+//   };
+
+//   return (
+//     <section
+//       id="calculator"
+//       className="scroll-mt-20 bg-white px-3 py-6 sm:px-5 sm:py-8"
+//     >
+//       <div
+//         className="
+//           mx-auto w-full max-w-[1450px] rounded-2xl
+//           bg-gradient-to-r from-[#f0faea] to-[#edf9e9]
+//           p-4 shadow-soft sm:p-6 lg:p-8
+//         "
+//       >
+//         <div
+//           className="
+//             grid grid-cols-1 items-center gap-6
+//             lg:grid-cols-[39%_61%] lg:gap-7
+//           "
+//         >
+//           {/* LEFT CONTENT */}
+//           <div className="min-w-0">
+//             <SectionTag>
+//               Personalized Nutrition Insights
+//             </SectionTag>
+
+//             <h2
+//               className="
+//                 mt-4 text-[27px] font-black leading-[1.08]
+//                 tracking-tight text-protein-dark sm:text-[31px]
+//               "
+//             >
+//               Know Your Protein Need
+//               <br />
+//               &amp; BMI in Seconds
+//             </h2>
+
+//             <p
+//               className="
+//                 mt-3 max-w-[430px] text-[15px]
+//                 leading-5 text-slate-600 sm:text-sm
+//               "
+//             >
+//               Get personalized results based on your age,
+//               lifestyle and goals. One simple calculator
+//               for everyone.
+//             </p>
+
+//             <div
+//               className="
+//                 mt-5 grid grid-cols-4 gap-1
+//                 sm:mt-6 sm:gap-2
+//               "
+//             >
+//               {[
+//                 [UserRound, "Understand", "Your Body"],
+//                 [Leaf, "Know Protein", "Requirement"],
+//                 [BarChart3, "Get Your BMI", ""],
+//                 [Heart, "Make Better", "Food Choices"],
+//               ].map(([Icon, title, subtitle]) => (
+//                 <div key={title} className="min-w-0 text-center">
+//                   <div
+//                     className="
+//                       mx-auto grid h-9 w-9 place-items-center
+//                       rounded-full bg-white text-protein-green
+//                       shadow-sm sm:h-11 sm:w-11
+//                     "
+//                   >
+//                     <Icon
+//                       size={18}
+//                       className="sm:h-[21px] sm:w-[21px]"
+//                     />
+//                   </div>
+
+//                   <p
+//                     className="
+//                       mt-2 text-[10px] font-bold
+//                       leading-3 text-slate-700
+//                     "
+//                   >
+//                     {title}
+//                   </p>
+
+//                   {subtitle && (
+//                     <p
+//                       className="
+//                         text-[8px] font-bold leading-3
+//                         text-slate-700 sm:text-[10px]
+//                       "
+//                     >
+//                       {subtitle}
+//                     </p>
+//                   )}
+//                 </div>
+//               ))}
+//             </div>
+//           </div>
+
+//           {/* CALCULATOR CARD */}
+//           <div
+//             className="
+//               mx-auto w-full max-w-[620px]
+//               rounded-2xl bg-white p-2.5
+//               shadow-card sm:p-3
+//             "
+//           >
+//             {/* PROFILE TABS WITH VISIBLE LABELS */}
+//             <div className="flex items-start justify-center gap-2 pb-3 sm:gap-3">
+//               {PROFILES.map((item) => {
+//                 const Icon = PROFILE_ICONS[item] || UserRound;
+//                 const selected = profile === item;
+
+//                 return (
+//                   <button
+//                     key={item}
+//                     type="button"
+//                     onClick={() => handleProfileChange(item)}
+//                     aria-label={item}
+//                     aria-pressed={selected}
+//                     className="
+//                       group flex min-w-0 flex-1
+//                       flex-col items-center gap-1.5
+//                     "
+//                   >
+//                     <span
+//                       className={`
+//                         grid h-11 w-11 place-items-center
+//                         rounded-xl border transition-all duration-200
+//                         sm:h-12 sm:w-12
+//                         ${
+//                           selected
+//                             ? "border-protein-green bg-protein-green text-white shadow-md"
+//                             : "border-slate-200 bg-white text-protein-green hover:border-protein-green hover:bg-green-50"
+//                         }
+//                       `}
+//                     >
+//                       <Icon size={23} strokeWidth={1.9} />
+//                     </span>
+
+//                     <span
+//                       className={`
+//                         max-w-full text-center text-[9px]
+//                         font-semibold leading-tight sm:text-[10px]
+//                         ${
+//                           selected
+//                             ? "text-protein-dark"
+//                             : "text-slate-600"
+//                         }
+//                       `}
+//                     >
+//                       {item}
+//                     </span>
+//                   </button>
+//                 );
+//               })}
+//             </div>
+
+//             {/* KID GENDER */}
+//             {profile === "Kid" && (
+//               <div className="mt-3">
+//                 <p className="mb-3 text-sm font-bold text-slate-800">
+//                   Select Gender
+//                 </p>
+
+//                 <div className="grid grid-cols-2 gap-3">
+//                   {["Boy", "Girl"].map((item) => {
+//                     const selected = gender === item;
+//                     const Icon = GENDER_ICONS[item];
+
+//                     return (
+//                       <button
+//                         key={item}
+//                         type="button"
+//                         onClick={() => {
+//                           setGender(item);
+//                           setResult((prev) => ({
+//                             ...prev,
+//                             calculated: false,
+//                           }));
+//                         }}
+//                         aria-pressed={selected}
+//                         className="
+//                           flex flex-col items-center gap-2
+//                           rounded-xl border border-slate-100
+//                           bg-white p-3 transition-all
+//                           hover:border-green-300 hover:bg-green-50
+//                         "
+//                       >
+//                         <span
+//                           className={`
+//                             grid h-14 w-14 place-items-center
+//                             rounded-full border transition-all duration-200
+//                             ${
+//                               selected
+//                                 ? "border-protein-green bg-green-50 text-protein-green shadow-sm"
+//                                 : "border-slate-200 bg-white text-slate-500"
+//                             }
+//                           `}
+//                         >
+//                           <Icon size={29} strokeWidth={1.8} />
+//                         </span>
+
+//                         <span
+//                           className={`
+//                             text-sm font-bold
+//                             ${
+//                               selected
+//                                 ? "text-protein-dark"
+//                                 : "text-slate-600"
+//                             }
+//                           `}
+//                         >
+//                           {item}
+//                         </span>
+//                       </button>
+//                     );
+//                   })}
+//                 </div>
+//               </div>
+//             )}
+
+//             {/* AGE */}
+//             <div className="mt-2 rounded-xl border border-slate-100 bg-white p-2.5 shadow-sm">
+//               <label className="block text-xs font-medium text-slate-500">
+//                 Age (YRS)
+
+//                 <select
+//                   value={age}
+//                   onChange={(e) => {
+//                     setAge(Number(e.target.value));
+//                     setResult((prev) => ({
+//                       ...prev,
+//                       calculated: false,
+//                     }));
+//                   }}
+//                   className="
+//                     mt-1.5 h-9 w-full rounded-lg
+//                     border-0 bg-slate-100 px-2.5
+//                     text-sm font-medium text-slate-800
+//                     outline-none focus:ring-2 focus:ring-green-400
+//                   "
+//                 >
+//                   {Array.from({ length: 101 }, (_, index) => index).map(
+//                     (value) => (
+//                       <option key={value} value={value}>
+//                         {value} years
+//                       </option>
+//                     )
+//                   )}
+//                 </select>
+//               </label>
+//             </div>
+
+//             {/* HEIGHT, WEIGHT, BMI AND DAILY PROTEIN */}
+//             <div className="mt-2 grid grid-cols-2 gap-2 lg:grid-cols-4">
+//               {/* HEIGHT */}
+//               <div className="min-w-0 rounded-xl border border-slate-100 bg-white p-2 shadow-sm">
+//                 <div className="flex min-h-6 items-center">
+//                   <span className="text-xs font-semibold text-slate-600">
+//                     Height
+//                   </span>
+//                 </div>
+
+//                 <input
+//                   type="number"
+//                   min={heightUnit === "cm" ? 50 : 2}
+//                   max={heightUnit === "cm" ? 249 : 11.9}
+//                   step={heightUnit === "cm" ? 1 : 0.1}
+//                   value={height}
+//                   onChange={(e) => {
+//                     setHeight(e.target.value);
+//                     setResult((prev) => ({
+//                       ...prev,
+//                       calculated: false,
+//                     }));
+//                   }}
+//                   className="
+//                     mt-1.5 h-9 w-full min-w-0 rounded-lg
+//                     bg-slate-100 px-2 text-sm text-slate-800
+//                     outline-none focus:ring-2 focus:ring-green-400
+//                   "
+//                 />
+
+//                 <div className="mt-2 flex items-center rounded-lg bg-slate-100 p-0.5">
+//                   <button
+//                     type="button"
+//                     onClick={() => {
+//                       if (heightUnit !== "cm") handleHeightUnitChange();
+//                     }}
+//                     className={`
+//                       flex-1 rounded-md py-1.5 text-xs font-bold
+//                       ${
+//                         heightUnit === "cm"
+//                           ? "bg-white text-protein-green shadow-sm"
+//                           : "text-slate-500"
+//                       }
+//                     `}
+//                   >
+//                     CM
+//                   </button>
+
+//                   <button
+//                     type="button"
+//                     onClick={() => {
+//                       if (heightUnit !== "ft") handleHeightUnitChange();
+//                     }}
+//                     className={`
+//                       flex-1 rounded-md py-1.5 text-xs font-bold
+//                       ${
+//                         heightUnit === "ft"
+//                           ? "bg-white text-protein-green shadow-sm"
+//                           : "text-slate-500"
+//                       }
+//                     `}
+//                   >
+//                     FT
+//                   </button>
+//                 </div>
+//               </div>
+
+//               {/* WEIGHT */}
+//               <div className="min-w-0 rounded-xl border border-slate-100 bg-white p-2 shadow-sm">
+//                 <div className="flex min-h-6 items-center">
+//                   <span className="text-xs font-semibold text-slate-600">
+//                     Weight
+//                   </span>
+//                 </div>
+
+//                 <input
+//                   type="number"
+//                   min={weightUnit === "kg" ? 10 : 20}
+//                   max={weightUnit === "kg" ? 209 : 419}
+//                   step="1"
+//                   value={weight}
+//                   onChange={(e) => {
+//                     setWeight(e.target.value);
+//                     setResult((prev) => ({
+//                       ...prev,
+//                       calculated: false,
+//                     }));
+//                   }}
+//                   className="
+//                     mt-1.5 h-9 w-full min-w-0 rounded-lg
+//                     bg-slate-100 px-2 text-sm text-slate-800
+//                     outline-none focus:ring-2 focus:ring-green-400
+//                   "
+//                 />
+
+//                 <div className="mt-2 flex items-center rounded-lg bg-slate-100 p-0.5">
+//                   <button
+//                     type="button"
+//                     onClick={() => {
+//                       if (weightUnit !== "kg") handleWeightUnitChange();
+//                     }}
+//                     className={`
+//                       flex-1 rounded-md py-1.5 text-xs font-bold
+//                       ${
+//                         weightUnit === "kg"
+//                           ? "bg-white text-protein-green shadow-sm"
+//                           : "text-slate-500"
+//                       }
+//                     `}
+//                   >
+//                     KG
+//                   </button>
+
+//                   <button
+//                     type="button"
+//                     onClick={() => {
+//                       if (weightUnit !== "lb") handleWeightUnitChange();
+//                     }}
+//                     className={`
+//                       flex-1 rounded-md py-1.5 text-xs font-bold
+//                       ${
+//                         weightUnit === "lb"
+//                           ? "bg-white text-protein-green shadow-sm"
+//                           : "text-slate-500"
+//                       }
+//                     `}
+//                   >
+//                     LB
+//                   </button>
+//                 </div>
+//               </div>
+
+//               {/* BMI */}
+//               <div className="flex min-w-0 min-h-[125px] flex-col items-center rounded-xl border border-slate-100 bg-white p-2 text-center shadow-sm">
+//                 <div className="flex min-h-6 items-center justify-center text-blue-500">
+//                   <BarChart3 size={19} />
+//                 </div>
+
+//                 <p className="mt-1.5 text-xs font-semibold text-slate-600">
+//                   Your BMI
+//                 </p>
+
+//                 <p className="mt-2 text-2xl font-black text-blue-600">
+//                   {result.bmi}
+//                 </p>
+
+//                 <span
+//                   className={`
+//                     mt-1.5 rounded-full px-2 py-1 text-[9px] font-bold
+//                     ${
+//                       result.calculated
+//                         ? "bg-blue-50 text-blue-600"
+//                         : "bg-slate-100 text-slate-400"
+//                     }
+//                   `}
+//                 >
+//                   {result.calculated ? result.status : "--"}
+//                 </span>
+//               </div>
+
+//               {/* DAILY PROTEIN */}
+//               <div className="flex min-w-0 min-h-[125px] flex-col items-center rounded-xl border border-slate-100 bg-white p-2 text-center shadow-sm">
+//                 <div className="flex min-h-6 items-center justify-center text-protein-green">
+//                   <Heart size={19} />
+//                 </div>
+
+//                 <p className="mt-1.5 text-xs font-semibold text-slate-600">
+//                   Daily Protein
+//                 </p>
+
+//                 <p className="mt-2 text-2xl font-black text-protein-green">
+//                   {result.calculated ? `${result.protein}g` : "--"}
+//                 </p>
+
+//                 <p className="mt-1 text-[9px] leading-3 text-slate-400">
+//                   Recommended daily need
+//                 </p>
+//               </div>
+//             </div>
+
+//             {/* CALCULATE BUTTON */}
+//             <button
+//               type="button"
+//               onClick={handleCalculate}
+//               className="
+//                 mt-3 flex h-10 w-full items-center
+//                 justify-center gap-2 rounded-xl
+//                 bg-protein-green text-sm font-bold text-white
+//                 shadow-sm transition-all duration-200
+//                 hover:bg-green-800 hover:shadow-md
+//                 active:scale-[0.99]
+//               "
+//             >
+//               Calculate
+//               <ArrowRight size={16} />
+//             </button>
+
+//             <p className="mt-1.5 text-center text-[8px] leading-3 text-slate-400">
+//               Results are estimates. Consult a professional for medical advice.
+//             </p>
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
+
+
+
+
+
 import {
   ArrowRight,
   BarChart3,
   Heart,
   Leaf,
-  UserRound,
 } from "lucide-react";
+
+import {
+  LuUserRound,
+  LuBaby,
+} from "react-icons/lu";
+
+import { GiWeightLiftingUp } from "react-icons/gi";
+import { MdPregnantWoman } from "react-icons/md";
+import { FaPersonBreastfeeding } from "react-icons/fa6";
+import {
+  FaChild,
+  FaFemale,
+} from "react-icons/fa";
+
 import { useState } from "react";
 
 import { ACTIVITY_LEVELS, PROFILES } from "../data/homeData";
 import SectionTag from "./SectionTag";
 
+// --------------------------------
+// PROFILE ICONS - REACT ICONS
+// --------------------------------
 const PROFILE_ICONS = {
-  Adult: "🧍",
-  Kid: "👶",
-  "Pregnant Woman": "🤰",
-  "Feeding Mother": "🤱",
-  Bodybuilder: "🏋️",
+  Adult: LuUserRound,
+  Kid: LuBaby,
+  "Pregnant Woman": MdPregnantWoman,
+  "Feeding Mother": FaPersonBreastfeeding,
+  Bodybuilder: GiWeightLiftingUp,
+};
+
+// --------------------------------
+// KID GENDER ICONS - REACT ICONS
+// --------------------------------
+const GENDER_ICONS = {
+  Boy: FaChild,
+  Girl: FaFemale,
 };
 
 export default function ProteinCalculator() {
@@ -25,15 +801,12 @@ export default function ProteinCalculator() {
   const [profile, setProfile] = useState("Adult");
   const [age, setAge] = useState(25);
 
-  // Height can be entered as centimeters or decimal feet.
   const [heightUnit, setHeightUnit] = useState("cm");
   const [height, setHeight] = useState(170);
 
-  // Weight can be entered as kilograms or pounds.
   const [weightUnit, setWeightUnit] = useState("kg");
   const [weight, setWeight] = useState(20);
 
-  // Gender is displayed only for Kid profile.
   const [gender, setGender] = useState("Boy");
 
   const [activity] = useState(
@@ -56,12 +829,16 @@ export default function ProteinCalculator() {
   // HELPERS
   // --------------------------------
   const showValidationMessage = (message) => {
-    // Uses the same simple popup behavior as the existing component.
     alert(message);
   };
 
   const getProfileAgeMessage = (selectedProfile, ageValue) => {
-    const adultProfiles = ["Adult", "Pregnant Woman", "Feeding Mother", "Bodybuilder"];
+    const adultProfiles = [
+      "Adult",
+      "Pregnant Woman",
+      "Feeding Mother",
+      "Bodybuilder",
+    ];
 
     if (adultProfiles.includes(selectedProfile) && ageValue < 20) {
       return `For the ${selectedProfile} profile, age must be 20 years or above.`;
@@ -81,7 +858,6 @@ export default function ProteinCalculator() {
       return value;
     }
 
-    // The requested FT range is 2.0–11.9 decimal feet.
     return value * 30.48;
   };
 
@@ -100,18 +876,23 @@ export default function ProteinCalculator() {
     const heightValue = Number(height);
     const weightValue = Number(weight);
 
-    if (!Number.isFinite(ageValue)) {
+    if (
+      !Number.isFinite(ageValue) ||
+      ageValue < 0 ||
+      ageValue > 100
+    ) {
       showValidationMessage("Please select a valid age.");
       return false;
     }
 
     const ageMessage = getProfileAgeMessage(profile, ageValue);
+
     if (ageMessage) {
       showValidationMessage(ageMessage);
       return false;
     }
 
-    if (!Number.isFinite(heightValue)) {
+    if (!Number.isFinite(heightValue) || heightValue <= 0) {
       showValidationMessage("Please enter a valid height.");
       return false;
     }
@@ -120,9 +901,7 @@ export default function ProteinCalculator() {
       heightUnit === "cm" &&
       (heightValue < 50 || heightValue > 249)
     ) {
-      showValidationMessage(
-        "Height must be between 50 and 249 cm."
-      );
+      showValidationMessage("Height must be between 50 and 249 cm.");
       return false;
     }
 
@@ -130,13 +909,11 @@ export default function ProteinCalculator() {
       heightUnit === "ft" &&
       (heightValue < 2 || heightValue > 11.9)
     ) {
-      showValidationMessage(
-        "Height must be between 2 and 11.9 ft."
-      );
+      showValidationMessage("Height must be between 2 and 11.9 ft.");
       return false;
     }
 
-    if (!Number.isFinite(weightValue)) {
+    if (!Number.isFinite(weightValue) || weightValue <= 0) {
       showValidationMessage("Please enter a valid weight.");
       return false;
     }
@@ -145,9 +922,7 @@ export default function ProteinCalculator() {
       weightUnit === "kg" &&
       (weightValue < 10 || weightValue > 209)
     ) {
-      showValidationMessage(
-        "Weight must be between 10 and 209 kg."
-      );
+      showValidationMessage("Weight must be between 10 and 209 kg.");
       return false;
     }
 
@@ -155,9 +930,7 @@ export default function ProteinCalculator() {
       weightUnit === "lb" &&
       (weightValue < 20 || weightValue > 419)
     ) {
-      showValidationMessage(
-        "Weight must be between 20 and 419 lb."
-      );
+      showValidationMessage("Weight must be between 20 and 419 lb.");
       return false;
     }
 
@@ -178,14 +951,11 @@ export default function ProteinCalculator() {
       return;
     }
 
-    // BMI = weight (kg) / height (m)^2.
-    // Height and weight are converted to metric units above, so the same
-    // formula works whether the user selected cm/ft or kg/lb.
     const heightM = heightCm / 100;
     const bmi = weightKg / (heightM * heightM);
 
-    // Keep BMI labels consistent with the existing calculator UI.
     let status = "";
+
     if (bmi < 18.5) {
       status = "Underweight";
     } else if (bmi < 25) {
@@ -196,14 +966,9 @@ export default function ProteinCalculator() {
       status = "High";
     }
 
-    // Protein estimate (grams/day).
-    // Uses the selected activity factor and profile-specific multiplier
-    // already defined in this component. The exact PHP-equivalent formula
-    // requires the calculate_protein_requirement() function from health_helper.php.
     const activityData = ACTIVITY_LEVELS?.find(
       (item) => item.label === activity
     );
-    const activityFactor = Number(activityData?.factor ?? 1.2);
 
     const profileProteinFactors = {
       Adult: 0.8,
@@ -212,21 +977,12 @@ export default function ProteinCalculator() {
       "Feeding Mother": 1.5,
       Bodybuilder: 1.7,
     };
+
     const profileFactor = profileProteinFactors[profile] ?? 1;
-
-    // Keep the age available to the calculation so age-based adjustments can
-    // be added once the PHP helper's exact rules are available.
-    const ageValue = Number(age);
-    let ageFactor = 1;
-
-    // General estimate only; this is not a replacement for the backend helper.
-    if (profile === "Kid" && ageValue > 0 && ageValue <= 3) {
-      ageFactor = 1.1;
-    }
 
     const protein = Math.max(
       1,
-      Math.round(weightKg  * profileFactor )
+      Math.round(weightKg * profileFactor)
     );
 
     setResult({
@@ -243,8 +999,6 @@ export default function ProteinCalculator() {
   const handleProfileChange = (item) => {
     setProfile(item);
 
-    // Keep the currently selected values when switching profiles.
-    // Validation happens when Calculate is pressed.
     setResult({
       bmi: "--",
       protein: "--",
@@ -259,10 +1013,12 @@ export default function ProteinCalculator() {
   const handleHeightUnitChange = () => {
     if (heightUnit === "cm") {
       const feetValue = Number(height) / 30.48;
+
       setHeight(Number(feetValue.toFixed(1)));
       setHeightUnit("ft");
     } else {
       const cmValue = Number(height) * 30.48;
+
       setHeight(Math.round(cmValue));
       setHeightUnit("cm");
     }
@@ -279,10 +1035,12 @@ export default function ProteinCalculator() {
   const handleWeightUnitChange = () => {
     if (weightUnit === "kg") {
       const lbValue = Number(weight) / 0.45359237;
+
       setWeight(Math.round(lbValue));
       setWeightUnit("lb");
     } else {
       const kgValue = Number(weight) * 0.45359237;
+
       setWeight(Math.round(kgValue));
       setWeightUnit("kg");
     }
@@ -293,8 +1051,6 @@ export default function ProteinCalculator() {
     }));
   };
 
-  const ProfileIcon = PROFILE_ICONS[profile] || UserRound;
-
   return (
     <section
       id="calculator"
@@ -302,27 +1058,15 @@ export default function ProteinCalculator() {
     >
       <div
         className="
-          mx-auto
-          w-full
-          max-w-[1450px]
-          rounded-2xl
-          bg-gradient-to-r
-          from-[#f0faea]
-          to-[#edf9e9]
-          p-4
-          shadow-soft
-          sm:p-6
-          lg:p-8
+          mx-auto w-full max-w-[1450px] rounded-2xl
+          bg-gradient-to-r from-[#f0faea] to-[#edf9e9]
+          p-4 shadow-soft sm:p-6 lg:p-8
         "
       >
         <div
           className="
-            grid
-            grid-cols-1
-            items-center
-            gap-6
-            lg:grid-cols-[39%_61%]
-            lg:gap-7
+            grid grid-cols-1 items-center gap-6
+            lg:grid-cols-[39%_61%] lg:gap-7
           "
         >
           {/* LEFT CONTENT */}
@@ -333,68 +1077,44 @@ export default function ProteinCalculator() {
 
             <h2
               className="
-                mt-4
-                text-[27px]
-                font-black
-                leading-[1.08]
-                tracking-tight
-                text-protein-dark
-                sm:text-[31px]
+                mt-4 text-[27px] font-black leading-[1.08]
+                tracking-tight text-protein-dark sm:text-[31px]
               "
             >
               Know Your Protein Need
               <br />
-              & BMI in Seconds
+              &amp; BMI in Seconds
             </h2>
 
             <p
               className="
-                mt-3
-                max-w-[430px]
-                text-[15px]
-                leading-5
-                text-slate-600
-                sm:text-sm
+                mt-3 max-w-[430px] text-[15px]
+                leading-5 text-slate-600 sm:text-sm
               "
             >
-              Get personalized results based on your
-              age, lifestyle and goals. One simple
-              calculator for everyone.
+              Get personalized results based on your age,
+              lifestyle and goals. One simple calculator
+              for everyone.
             </p>
 
             <div
               className="
-                mt-5
-                grid
-                grid-cols-4
-                gap-1
-                sm:mt-6
-                sm:gap-2
+                mt-5 grid grid-cols-4 gap-1
+                sm:mt-6 sm:gap-2
               "
             >
               {[
-                [UserRound, "Understand", "Your Body"],
+                [LuUserRound, "Understand", "Your Body"],
                 [Leaf, "Know Protein", "Requirement"],
                 [BarChart3, "Get Your BMI", ""],
                 [Heart, "Make Better", "Food Choices"],
               ].map(([Icon, title, subtitle]) => (
-                <div
-                  key={title}
-                  className="min-w-0 text-center"
-                >
+                <div key={title} className="min-w-0 text-center">
                   <div
                     className="
-                      mx-auto
-                      grid
-                      h-9
-                      w-9
-                      place-items-center
-                      rounded-full
-                      bg-white
-                      text-protein-green
-                      shadow-sm
-                      sm:h-11
-                      sm:w-11
+                      mx-auto grid h-9 w-9 place-items-center
+                      rounded-full bg-white text-protein-green
+                      shadow-sm sm:h-11 sm:w-11
                     "
                   >
                     <Icon
@@ -405,12 +1125,8 @@ export default function ProteinCalculator() {
 
                   <p
                     className="
-                      mt-2
-                      text-[10px]
-                      font-bold
-                      leading-3
-                      text-slate-700
-                      sm:text-[10px]
+                      mt-2 text-[10px] font-bold
+                      leading-3 text-slate-700
                     "
                   >
                     {title}
@@ -419,11 +1135,8 @@ export default function ProteinCalculator() {
                   {subtitle && (
                     <p
                       className="
-                        text-[8px]
-                        font-bold
-                        leading-3
-                        text-slate-700
-                        sm:text-[10px]
+                        text-[8px] font-bold leading-3
+                        text-slate-700 sm:text-[10px]
                       "
                     >
                       {subtitle}
@@ -434,418 +1147,376 @@ export default function ProteinCalculator() {
             </div>
           </div>
 
-         
-{/* CALCULATOR CARD */}
-<div
-  className="
-    mx-auto
-    w-full
-    max-w-[620px]
-    rounded-2xl
-    bg-white
-    p-2.5
-    shadow-card
-    sm:p-3
-  "
->
-  {/* PROFILE TABS */}
-  <div
-    className="
-      flex
-      gap-1.5
-      overflow-x-auto
-      pb-1.5
-      scrollbar-hide
-    "
-  >
-    {PROFILES.map((item) => {
-      const icon = PROFILE_ICONS[item] || "👤";
-      const selected = profile === item;
+          {/* CALCULATOR CARD */}
+          <div
+            className="
+              mx-auto w-full max-w-[620px]
+              rounded-2xl bg-white p-2.5
+              shadow-card sm:p-3
+            "
+          >
+            {/* PROFILE TABS */}
+            <div className="flex items-start justify-center gap-2 pb-3 sm:gap-3">
+              {PROFILES.map((item) => {
+                const Icon = PROFILE_ICONS[item] || LuUserRound;
+                const selected = profile === item;
 
-      return (
-        <button
-          key={item}
-          type="button"
-          onClick={() => handleProfileChange(item)}
-          className={`
-            flex
-            min-w-[90px]
-            flex-1
-            items-center
-            justify-center
-            gap-1.5
-            rounded-lg
-            border
-            px-1.5
-            py-2
-            text-xs
-            font-semibold
-            transition-all
-            duration-200
-            sm:min-w-0
-            sm:text-sm
-            ${
-              selected
-                ? "border-protein-green bg-protein-green text-white shadow-sm"
-                : "border-slate-200 bg-white text-slate-700 hover:bg-green-50"
-            }
-          `}
-        >
-          <span className="text-lg leading-none" aria-hidden="true">
-            {icon}
-          </span>
-          <span className="whitespace-nowrap">{item}</span>
-        </button>
-      );
-    })}
-  </div>
+                return (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => handleProfileChange(item)}
+                    aria-label={item}
+                    aria-pressed={selected}
+                    className="
+                      group flex min-w-0 flex-1
+                      flex-col items-center gap-1.5
+                    "
+                  >
+                    <span
+                      className={`
+                        grid h-11 w-11 place-items-center
+                        rounded-xl border transition-all duration-200
+                        sm:h-12 sm:w-12
+                        ${
+                          selected
+                            ? "border-protein-green bg-protein-green text-white shadow-md"
+                            : "border-slate-200 bg-white text-protein-green hover:border-protein-green hover:bg-green-50"
+                        }
+                      `}
+                    >
+                      <Icon size={22} />
+                    </span>
 
-  {/* KID GENDER */}
-  {profile === "Kid" && (
-    <div className="mt-3">
-      <p className="mb-2 text-sm font-bold text-slate-800">
-        Select Gender
-      </p>
+                    <span
+                      className={`
+                        max-w-full text-center text-[9px]
+                        font-semibold leading-tight sm:text-[10px]
+                        ${
+                          selected
+                            ? "text-protein-dark"
+                            : "text-slate-600"
+                        }
+                      `}
+                    >
+                      {item}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        {[
-          { value: "Boy", emoji: "👦" },
-          { value: "Girl", emoji: "👧" },
-        ].map((item) => {
-          const selected = gender === item.value;
+            {/* KID GENDER */}
+            {profile === "Kid" && (
+              <div className="mt-3">
+                <p className="mb-3 text-sm font-bold text-slate-800">
+                  Select Gender
+                </p>
 
-          return (
-            <button
-              key={item.value}
-              type="button"
-              onClick={() => {
-                setGender(item.value);
-                setResult((prev) => ({
-                  ...prev,
-                  calculated: false,
-                }));
-              }}
-              className="flex flex-col items-center"
-            >
-              <div
-                className={`
-                  grid
-                  h-14
-                  w-14
-                  place-items-center
-                  rounded-full
-                  border
-                  text-2xl
-                  shadow-sm
-                  transition-all
-                  ${
-                    selected
-                      ? "border-protein-green bg-protein-green"
-                      : "border-slate-200 bg-white"
-                  }
-                `}
-              >
-                {item.emoji}
+                <div className="grid grid-cols-2 gap-3">
+                  {["Boy", "Girl"].map((item) => {
+                    const selected = gender === item;
+                    const Icon = GENDER_ICONS[item];
+
+                    return (
+                      <button
+                        key={item}
+                        type="button"
+                        onClick={() => {
+                          setGender(item);
+
+                          setResult((prev) => ({
+                            ...prev,
+                            calculated: false,
+                          }));
+                        }}
+                        aria-pressed={selected}
+                        className="
+                          flex flex-col items-center gap-2
+                          rounded-xl border border-slate-100
+                          bg-white p-3 transition-all
+                          hover:border-green-300 hover:bg-green-50
+                        "
+                      >
+                        <span
+                          className={`
+                            grid h-11 w-11 place-items-center
+                            rounded-full border transition-all duration-200
+                            ${
+                              selected
+                                ? "border-protein-green bg-green-50 text-protein-green shadow-sm"
+                                : "border-slate-200 bg-white text-protein-green"
+                            }
+                          `}
+                        >
+                          <Icon size={24} />
+                        </span>
+
+                        <span
+                          className={`
+                            text-sm font-bold
+                            ${
+                              selected
+                                ? "text-protein-dark"
+                                : "text-slate-600"
+                            }
+                          `}
+                        >
+                          {item}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* AGE */}
+            <div className="mt-2 rounded-xl border border-slate-100 bg-white p-2.5 shadow-sm">
+              <label className="block text-xs font-medium text-slate-500">
+                Age (YRS)
+
+                <select
+                  value={age}
+                  onChange={(e) => {
+                    setAge(Number(e.target.value));
+
+                    setResult((prev) => ({
+                      ...prev,
+                      calculated: false,
+                    }));
+                  }}
+                  className="
+                    mt-1.5 h-9 w-full rounded-lg
+                    border-0 bg-slate-100 px-2.5
+                    text-sm font-medium text-slate-800
+                    outline-none focus:ring-2 focus:ring-green-400
+                  "
+                >
+                  {Array.from({ length: 101 }, (_, index) => index).map(
+                    (value) => (
+                      <option key={value} value={value}>
+                        {value} years
+                      </option>
+                    )
+                  )}
+                </select>
+              </label>
+            </div>
+
+            {/* HEIGHT, WEIGHT, BMI AND DAILY PROTEIN */}
+            <div className="mt-2 grid grid-cols-2 gap-2 lg:grid-cols-4">
+              {/* HEIGHT */}
+              <div className="min-w-0 rounded-xl border border-slate-100 bg-white p-2 shadow-sm">
+                <div className="flex min-h-6 items-center">
+                  <span className="text-xs font-semibold text-slate-600">
+                    Height
+                  </span>
+                </div>
+
+                <input
+                  type="number"
+                  min={heightUnit === "cm" ? 50 : 2}
+                  max={heightUnit === "cm" ? 249 : 11.9}
+                  step={heightUnit === "cm" ? 1 : 0.1}
+                  value={height}
+                  onChange={(e) => {
+                    setHeight(e.target.value);
+
+                    setResult((prev) => ({
+                      ...prev,
+                      calculated: false,
+                    }));
+                  }}
+                  className="
+                    mt-1.5 h-9 w-full min-w-0 rounded-lg
+                    bg-slate-100 px-2 text-sm text-slate-800
+                    outline-none focus:ring-2 focus:ring-green-400
+                  "
+                />
+
+                <div className="mt-2 flex items-center rounded-lg bg-slate-100 p-0.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (heightUnit !== "cm") {
+                        handleHeightUnitChange();
+                      }
+                    }}
+                    className={`
+                      flex-1 rounded-md py-1.5 text-xs font-bold
+                      ${
+                        heightUnit === "cm"
+                          ? "bg-white text-protein-green shadow-sm"
+                          : "text-slate-500"
+                      }
+                    `}
+                  >
+                    CM
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (heightUnit !== "ft") {
+                        handleHeightUnitChange();
+                      }
+                    }}
+                    className={`
+                      flex-1 rounded-md py-1.5 text-xs font-bold
+                      ${
+                        heightUnit === "ft"
+                          ? "bg-white text-protein-green shadow-sm"
+                          : "text-slate-500"
+                      }
+                    `}
+                  >
+                    FT
+                  </button>
+                </div>
               </div>
 
-              <span
-                className={`
-                  mt-1.5
-                  text-sm
-                  font-bold
-                  ${
-                    selected
-                      ? "text-protein-dark"
-                      : "text-slate-700"
-                  }
-                `}
-              >
-                {item.value}
-              </span>
+              {/* WEIGHT */}
+              <div className="min-w-0 rounded-xl border border-slate-100 bg-white p-2 shadow-sm">
+                <div className="flex min-h-6 items-center">
+                  <span className="text-xs font-semibold text-slate-600">
+                    Weight
+                  </span>
+                </div>
+
+                <input
+                  type="number"
+                  min={weightUnit === "kg" ? 10 : 20}
+                  max={weightUnit === "kg" ? 209 : 419}
+                  step="1"
+                  value={weight}
+                  onChange={(e) => {
+                    setWeight(e.target.value);
+
+                    setResult((prev) => ({
+                      ...prev,
+                      calculated: false,
+                    }));
+                  }}
+                  className="
+                    mt-1.5 h-9 w-full min-w-0 rounded-lg
+                    bg-slate-100 px-2 text-sm text-slate-800
+                    outline-none focus:ring-2 focus:ring-green-400
+                  "
+                />
+
+                <div className="mt-2 flex items-center rounded-lg bg-slate-100 p-0.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (weightUnit !== "kg") {
+                        handleWeightUnitChange();
+                      }
+                    }}
+                    className={`
+                      flex-1 rounded-md py-1.5 text-xs font-bold
+                      ${
+                        weightUnit === "kg"
+                          ? "bg-white text-protein-green shadow-sm"
+                          : "text-slate-500"
+                      }
+                    `}
+                  >
+                    KG
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (weightUnit !== "lb") {
+                        handleWeightUnitChange();
+                      }
+                    }}
+                    className={`
+                      flex-1 rounded-md py-1.5 text-xs font-bold
+                      ${
+                        weightUnit === "lb"
+                          ? "bg-white text-protein-green shadow-sm"
+                          : "text-slate-500"
+                      }
+                    `}
+                  >
+                    LB
+                  </button>
+                </div>
+              </div>
+
+              {/* BMI */}
+              <div className="flex min-h-[125px] min-w-0 flex-col items-center rounded-xl border border-slate-100 bg-white p-2 text-center shadow-sm">
+                <div className="flex min-h-6 items-center justify-center text-blue-500">
+                  <BarChart3 size={19} />
+                </div>
+
+                <p className="mt-1.5 text-xs font-semibold text-slate-600">
+                  Your BMI
+                </p>
+
+                <p className="mt-2 text-2xl font-black text-blue-600">
+                  {result.bmi}
+                </p>
+
+                <span
+                  className={`
+                    mt-1.5 rounded-full px-2 py-1 text-[9px] font-bold
+                    ${
+                      result.calculated
+                        ? "bg-blue-50 text-blue-600"
+                        : "bg-slate-100 text-slate-400"
+                    }
+                  `}
+                >
+                  {result.calculated ? result.status : "--"}
+                </span>
+              </div>
+
+              {/* DAILY PROTEIN */}
+              <div className="flex min-h-[125px] min-w-0 flex-col items-center rounded-xl border border-slate-100 bg-white p-2 text-center shadow-sm">
+                <div className="flex min-h-6 items-center justify-center text-protein-green">
+                  <Heart size={19} />
+                </div>
+
+                <p className="mt-1.5 text-xs font-semibold text-slate-600">
+                  Daily Protein
+                </p>
+
+                <p className="mt-2 text-2xl font-black text-protein-green">
+                  {result.calculated ? `${result.protein}g` : "--"}
+                </p>
+
+                <p className="mt-1 text-[9px] leading-3 text-slate-400">
+                  Recommended daily need
+                </p>
+              </div>
+            </div>
+
+            {/* CALCULATE BUTTON */}
+            <button
+              type="button"
+              onClick={handleCalculate}
+              className="
+                mt-3 flex h-10 w-full items-center
+                justify-center gap-2 rounded-xl
+                bg-protein-green text-sm font-bold text-white
+                shadow-sm transition-all duration-200
+                hover:bg-green-800 hover:shadow-md
+                active:scale-[0.99]
+              "
+            >
+              Calculate
+              <ArrowRight size={16} />
             </button>
-          );
-        })}
-      </div>
-    </div>
-  )}
 
-  {/* AGE */}
-  <div className="mt-2 rounded-xl border border-slate-100 bg-white p-2.5 shadow-sm">
-    <label className="block text-xs font-medium text-slate-500">
-      Age (YRS)
-
-      <select
-        value={age}
-        onChange={(e) => {
-          setAge(Number(e.target.value));
-          setResult((prev) => ({
-            ...prev,
-            calculated: false,
-          }));
-        }}
-        className="
-          mt-1.5
-          h-9
-          w-full
-          rounded-lg
-          border-0
-          bg-slate-100
-          px-2.5
-          text-sm
-          font-medium
-          text-slate-800
-          outline-none
-          focus:ring-2
-          focus:ring-green-400
-        "
-      >
-        {Array.from({ length: 101 }, (_, index) => index).map(
-          (value) => (
-            <option key={value} value={value}>
-              {value} years
-            </option>
-          )
-        )}
-      </select>
-    </label>
-  </div>
-
-  {/* HEIGHT, WEIGHT, BMI AND DAILY PROTEIN */}
-  <div className="mt-2 grid grid-cols-2 gap-2 lg:grid-cols-4">
-    {/* HEIGHT */}
-    <div className="min-w-0 rounded-xl border border-slate-100 bg-white p-2 shadow-sm">
-      <div className="flex min-h-6 items-center">
-        <span className="text-xs font-semibold text-slate-600">
-          Height
-        </span>
-      </div>
-
-      <input
-        type="number"
-        min={heightUnit === "cm" ? 50 : 2}
-        max={heightUnit === "cm" ? 249 : 11.9}
-        step={heightUnit === "cm" ? 1 : 0.1}
-        value={height}
-        onChange={(e) => {
-          setHeight(e.target.value);
-          setResult((prev) => ({
-            ...prev,
-            calculated: false,
-          }));
-        }}
-        className="
-          mt-1.5
-          h-9
-          w-full
-          min-w-0
-          rounded-lg
-          bg-slate-100
-          px-2
-          text-sm
-          text-slate-800
-          outline-none
-          focus:ring-2
-          focus:ring-green-400
-        "
-      />
-
-      <div className="mt-2 flex items-center rounded-lg bg-slate-100 p-0.5">
-        <button
-          type="button"
-          onClick={() => {
-            if (heightUnit !== "cm") handleHeightUnitChange();
-          }}
-          className={`
-            flex-1 rounded-md py-1.5 text-xs font-bold
-            ${
-              heightUnit === "cm"
-                ? "bg-white text-protein-green shadow-sm"
-                : "text-slate-500"
-            }
-          `}
-        >
-          CM
-        </button>
-
-        <button
-          type="button"
-          onClick={() => {
-            if (heightUnit !== "ft") handleHeightUnitChange();
-          }}
-          className={`
-            flex-1 rounded-md py-1.5 text-xs font-bold
-            ${
-              heightUnit === "ft"
-                ? "bg-white text-protein-green shadow-sm"
-                : "text-slate-500"
-            }
-          `}
-        >
-          FT
-        </button>
-      </div>
-    </div>
-
-    {/* WEIGHT */}
-    <div className="min-w-0 rounded-xl border border-slate-100 bg-white p-2 shadow-sm">
-      <div className="flex min-h-6 items-center">
-        <span className="text-xs font-semibold text-slate-600">
-          Weight
-        </span>
-      </div>
-
-      <input
-        type="number"
-        min={weightUnit === "kg" ? 10 : 20}
-        max={weightUnit === "kg" ? 209 : 419}
-        step="1"
-        value={weight}
-        onChange={(e) => {
-          setWeight(e.target.value);
-          setResult((prev) => ({
-            ...prev,
-            calculated: false,
-          }));
-        }}
-        className="
-          mt-1.5
-          h-9
-          w-full
-          min-w-0
-          rounded-lg
-          bg-slate-100
-          px-2
-          text-sm
-          text-slate-800
-          outline-none
-          focus:ring-2
-          focus:ring-green-400
-        "
-      />
-
-      <div className="mt-2 flex items-center rounded-lg bg-slate-100 p-0.5">
-        <button
-          type="button"
-          onClick={() => {
-            if (weightUnit !== "kg") handleWeightUnitChange();
-          }}
-          className={`
-            flex-1 rounded-md py-1.5 text-xs font-bold
-            ${
-              weightUnit === "kg"
-                ? "bg-white text-protein-green shadow-sm"
-                : "text-slate-500"
-            }
-          `}
-        >
-          KG
-        </button>
-
-        <button
-          type="button"
-          onClick={() => {
-            if (weightUnit !== "lb") handleWeightUnitChange();
-          }}
-          className={`
-            flex-1 rounded-md py-1.5 text-xs font-bold
-            ${
-              weightUnit === "lb"
-                ? "bg-white text-protein-green shadow-sm"
-                : "text-slate-500"
-            }
-          `}
-        >
-          LB
-        </button>
-      </div>
-    </div>
-
-    {/* BMI */}
-    <div className="flex min-w-0 min-h-[125px] flex-col items-center rounded-xl border border-slate-100 bg-white p-2 text-center shadow-sm">
-      <div className="flex min-h-6 items-center justify-center text-blue-500">
-        <BarChart3 size={19} />
-      </div>
-
-      <p className="mt-1.5 text-xs font-semibold text-slate-600">
-        Your BMI
-      </p>
-
-      <p className="mt-2 text-2xl font-black text-blue-600">
-        {result.bmi}
-      </p>
-
-      <span
-        className={`
-          mt-1.5 rounded-full px-2 py-1 text-[9px] font-bold
-          ${
-            result.calculated
-              ? "bg-blue-50 text-blue-600"
-              : "bg-slate-100 text-slate-400"
-          }
-        `}
-      >
-        {result.calculated ? result.status : "--"}
-      </span>
-    </div>
-
-    {/* DAILY PROTEIN */}
-    <div className="flex min-w-0 min-h-[125px] flex-col items-center rounded-xl border border-slate-100 bg-white p-2 text-center shadow-sm">
-      <div className="flex min-h-6 items-center justify-center text-protein-green">
-        <Heart size={19} />
-      </div>
-
-      <p className="mt-1.5 text-xs font-semibold text-slate-600">
-        Daily Protein
-      </p>
-
-      <p className="mt-2 text-2xl font-black text-protein-green">
-        {result.calculated ? `${result.protein}g` : "--"}
-      </p>
-
-      <p className="mt-1 text-[9px] leading-3 text-slate-400">
-        Recommended daily need
-      </p>
-    </div>
-  </div>
-
-  {/* CALCULATE BUTTON */}
-  <button
-    type="button"
-    onClick={handleCalculate}
-    className="
-      mt-3
-      flex
-      h-10
-      w-full
-      items-center
-      justify-center
-      gap-2
-      rounded-xl
-      bg-protein-green
-      text-sm
-      font-bold
-      text-white
-      shadow-sm
-      transition-all
-      duration-200
-      hover:bg-green-800
-      hover:shadow-md
-      active:scale-[0.99]
-    "
-  >
-    Calculate
-    <ArrowRight size={16} />
-  </button>
-
-  <p className="mt-1.5 text-center text-[8px] leading-3 text-slate-400">
-    Results are estimates. Consult a professional for medical advice.
-  </p>
-</div>
-
+            <p className="mt-1.5 text-center text-[8px] leading-3 text-slate-400">
+              Results are estimates. Consult a professional for medical advice.
+            </p>
+          </div>
         </div>
       </div>
     </section>
   );
 }
-
-

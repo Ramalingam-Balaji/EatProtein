@@ -2,17 +2,14 @@
 import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import {
-  ArrowRight,
   ArrowUpRight,
   Bike,
   ChevronRight,
-  Clock3,
   Leaf,
   MapPin,
   Search,
   ShoppingBasket,
   Star,
-  Tag,
   Truck,
 } from "lucide-react";
 
@@ -25,9 +22,14 @@ import {
 export default function FoodStores() {
   const [searchParams] = useSearchParams();
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const selectedStore = searchParams.get("store");
 
+  // Pagination settings
+  const STORES_PER_PAGE = 7;
+
+  // Get all stores from the category data
   const allStores = useMemo(
     () =>
       Object.entries(FOOD_STORE_CATEGORIES).flatMap(
@@ -41,6 +43,7 @@ export default function FoodStores() {
     []
   );
 
+  // Top Rated Stores
   const topRatedStores = useMemo(
     () =>
       [...allStores]
@@ -49,6 +52,7 @@ export default function FoodStores() {
     [allStores]
   );
 
+  // Search and selected-store filtering
   const filteredStores = useMemo(() => {
     const query = search.trim().toLowerCase();
 
@@ -67,10 +71,46 @@ export default function FoodStores() {
     });
   }, [allStores, search, selectedStore]);
 
+  // Pagination calculations
+  const totalPages = Math.ceil(
+    filteredStores.length / STORES_PER_PAGE
+  );
+
+  const startIndex = (currentPage - 1) * STORES_PER_PAGE;
+
+  const currentStores = filteredStores.slice(
+    startIndex,
+    startIndex + STORES_PER_PAGE
+  );
+
+  // Handle search changes and return to page 1
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value);
+    setCurrentPage(1);
+  };
+
+  // Clear search and reset pagination
+  const handleClearSearch = () => {
+    setSearch("");
+    setCurrentPage(1);
+    window.history.replaceState({}, "", "/food-stores");
+  };
+
+  // Navigate to a page and scroll to Nearby Stores
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+
+    document.getElementById("nearby-stores")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   return (
     <main className="min-h-screen bg-[#fbfdfb] pb-12">
       <div className="mx-auto max-w-[1200px] space-y-9 px-4 py-6 sm:px-6 lg:space-y-12">
-        {/* Page heading */}
+
+        {/* Page Heading and Search */}
         <section className="rounded-2xl bg-[#075c40] px-5 py-7 text-white sm:px-8 sm:py-9">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-xs font-bold">
             <Leaf size={15} />
@@ -89,18 +129,26 @@ export default function FoodStores() {
           <form
             onSubmit={(event) => {
               event.preventDefault();
+              setCurrentPage(1);
+
               document
                 .getElementById("nearby-stores")
-                ?.scrollIntoView({ behavior: "smooth" });
+                ?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
             }}
             className="mt-6 flex max-w-xl items-center gap-2 rounded-xl bg-white p-2"
           >
-            <Search size={21} className="ml-2 shrink-0 text-gray-400" />
+            <Search
+              size={21}
+              className="ml-2 shrink-0 text-gray-400"
+            />
 
             <input
               type="search"
               value={search}
-              onChange={(event) => setSearch(event.target.value)}
+              onChange={handleSearchChange}
               placeholder="Search stores, food or categories..."
               aria-label="Search food stores"
               className="min-w-0 flex-1 bg-transparent px-1 py-2 text-sm text-gray-800 outline-none placeholder:text-gray-400"
@@ -163,7 +211,9 @@ export default function FoodStores() {
             {topRatedStores.map((store) => (
               <Link
                 key={`${store.categorySlug}-${store.name}`}
-                to={`/food-stores/${store.categorySlug}/${encodeURIComponent(store.name)}`}
+                to={`/food-stores/${store.categorySlug}/${encodeURIComponent(
+                  store.name
+                )}`}
                 className="group w-[235px] shrink-0 snap-start overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg sm:w-[260px] lg:w-[calc((100%-3rem)/4)]"
               >
                 <div className="relative h-40 overflow-hidden sm:h-44">
@@ -206,14 +256,18 @@ export default function FoodStores() {
           </div>
         </section>
 
-        {/* Nearby Stores */}
-        <section id="nearby-stores">
+        {/* Nearby Stores with Pagination */}
+        <section
+          id="nearby-stores"
+          className="scroll-mt-24"
+        >
           <SectionHeading
             title="Near to Me"
             subtitle="Discover food stores around your area"
             link="/food-stores"
           />
 
+          {/* Selected Store */}
           {selectedStore && (
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-[#eaf7ec] p-3">
               <p className="text-sm font-semibold text-[#075c40]">
@@ -222,21 +276,25 @@ export default function FoodStores() {
 
               <Link
                 to="/food-stores"
-                className="text-sm font-bold text-[#087b4b] underline"
+                className="text-sm font-bold text-[#087b4b] underline hover:text-[#70bd79]"
               >
                 Show all stores
               </Link>
             </div>
           )}
 
-          <div className="hide-scrollbar max-h-[650px] space-y-4 overflow-y-auto overscroll-contain pb-2">
-            {filteredStores.length > 0 ? (
-              filteredStores.map((store) => (
+          {/* Store Cards: Maximum 7 per page */}
+          <div className="hide-scrollbar space-y-4 pb-2">
+            {currentStores.length > 0 ? (
+              currentStores.map((store) => (
                 <Link
                   key={`${store.categorySlug}-${store.name}`}
-                  to={`/food-stores/${store.categorySlug}/${encodeURIComponent(store.name)}`}
+                  to={`/food-stores/${store.categorySlug}/${encodeURIComponent(
+                    store.name
+                  )}`}
                   className="group flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-3 shadow-sm transition hover:border-[#b7ddbf] hover:shadow-md sm:flex-row sm:items-center sm:p-4 lg:gap-5"
                 >
+                  {/* Store Image */}
                   <div className="h-28 w-full shrink-0 overflow-hidden rounded-xl bg-[#f1f7ef] sm:h-24 sm:w-28">
                     <img
                       src={store.image}
@@ -246,6 +304,7 @@ export default function FoodStores() {
                     />
                   </div>
 
+                  {/* Store Information */}
                   <div className="min-w-0 flex-1">
                     <h3 className="text-base font-extrabold text-[#075c40] sm:text-lg">
                       {store.name}
@@ -259,9 +318,14 @@ export default function FoodStores() {
                       {store.description}
                     </p>
 
+                    {/* Rating, Delivery Time and Distance */}
                     <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-gray-500 sm:text-sm">
                       <span className="inline-flex items-center gap-1 font-bold text-[#087b4b]">
-                        <Star size={15} fill="#ffcf35" className="text-[#eab308]" />
+                        <Star
+                          size={15}
+                          fill="#ffcf35"
+                          className="text-[#eab308]"
+                        />
                         {store.rating}
                       </span>
 
@@ -277,6 +341,7 @@ export default function FoodStores() {
                     </div>
                   </div>
 
+                  {/* Store Status and Delivery Offer */}
                   <div className="flex shrink-0 items-center justify-between gap-3 sm:w-[155px] sm:flex-col sm:items-start sm:justify-center">
                     <span
                       className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-bold ${
@@ -290,10 +355,12 @@ export default function FoodStores() {
 
                     <span className="inline-flex items-center gap-2 rounded-xl bg-[#edf8ee] px-3 py-2 text-[#087b4b]">
                       <Truck size={19} />
+
                       <span>
                         <span className="block text-xs font-bold">
                           {store.delivery}
                         </span>
+
                         <span className="mt-0.5 block text-[11px] text-red-600">
                           {store.offer}
                         </span>
@@ -301,6 +368,7 @@ export default function FoodStores() {
                     </span>
                   </div>
 
+                  {/* Right Arrow */}
                   <ChevronRight
                     size={20}
                     className="hidden shrink-0 text-gray-400 transition group-hover:translate-x-1 group-hover:text-[#087b4b] sm:block"
@@ -308,6 +376,7 @@ export default function FoodStores() {
                 </Link>
               ))
             ) : (
+              /* No Stores Found */
               <div className="rounded-2xl border border-dashed border-gray-300 bg-white px-4 py-12 text-center">
                 <ShoppingBasket
                   size={34}
@@ -323,20 +392,82 @@ export default function FoodStores() {
                 </p>
 
                 <button
-                  onClick={() => {
-                    setSearch("");
-                    window.history.replaceState({}, "", "/food-stores");
-                  }}
-                  className="mt-4 rounded-full bg-[#087b4b] px-5 py-2 text-sm font-bold text-white hover:bg-[#075c40]"
+                  type="button"
+                  onClick={handleClearSearch}
+                  className="mt-4 rounded-full bg-[#087b4b] px-5 py-2 text-sm font-bold text-white transition hover:bg-[#075c40]"
                 >
                   Clear search
                 </button>
               </div>
             )}
           </div>
-        </section>
 
-       
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <nav
+              aria-label="Nearby stores pagination"
+              className="mt-6 flex flex-wrap items-center justify-center gap-2"
+            >
+              {/* Previous */}
+              <button
+                type="button"
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-[#075c40] transition hover:bg-[#eaf7ec] disabled:cursor-not-allowed disabled:opacity-40 sm:px-4"
+              >
+                Previous
+              </button>
+
+              {/* Page Numbers */}
+              {Array.from(
+                { length: totalPages },
+                (_, index) => index + 1
+              ).map((page) => (
+                <button
+                  key={page}
+                  type="button"
+                  onClick={() => handlePageChange(page)}
+                  aria-label={`Go to page ${page}`}
+                  aria-current={
+                    currentPage === page ? "page" : undefined
+                  }
+                  className={`min-w-10 rounded-lg px-3 py-2 text-sm font-bold transition ${
+                    currentPage === page
+                      ? "bg-[#087b4b] text-white shadow-sm"
+                      : "border border-gray-200 bg-white text-[#075c40] hover:bg-[#eaf7ec]"
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+
+              {/* Next */}
+              <button
+                type="button"
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-[#075c40] transition hover:bg-[#eaf7ec] disabled:cursor-not-allowed disabled:opacity-40 sm:px-4"
+              >
+                Next
+              </button>
+            </nav>
+          )}
+
+          {/* Results Counter */}
+          {filteredStores.length > 0 && (
+            <p
+              aria-live="polite"
+              className="mt-3 text-center text-xs text-gray-500"
+            >
+              Showing {startIndex + 1}–
+              {Math.min(
+                startIndex + STORES_PER_PAGE,
+                filteredStores.length
+              )}{" "}
+              of {filteredStores.length} stores
+            </p>
+          )}
+        </section>
       </div>
     </main>
   );

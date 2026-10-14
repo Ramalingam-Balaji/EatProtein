@@ -6,6 +6,7 @@ import FoodStores from "./pages/FoodStores";
 import CategoryStores from "./pages/CategoryStores";
 import Contact from "./pages/Contact";
 import Store from "./pages/Store";
+import StoreDetails from "./pages/StoreDetails";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -26,6 +27,12 @@ export default function AppRoutes() {
             path="/food-stores/:category"
             element={<CategoryStores />}
           />
+
+           <Route
+            path="/food-stores/:categorySlug/:storeName"
+            element={<StoreDetails />}
+          />
+
           <Route
             path="/store-registration"
             element={<Store />}
