@@ -65,7 +65,7 @@ export default function FranchiseSection() {
                     {item.title}
                   </p>
 
-                  <p className="mt-1 text-[10px] text-slate-500">
+                  <p className="mt-1 text-[12px] text-slate-500">
                     {item.subtitle}
                   </p>
                 </div>

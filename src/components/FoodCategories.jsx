@@ -65,7 +65,7 @@ export default function FoodCategories() {
 
               {/* Category Title */}
               <div className="flex min-h-[50px] items-center justify-center p-2 text-center">
-                <span className="text-[10px] font-bold leading-3 text-slate-800">
+                <span className="text-[12px] font-bold leading-3 text-slate-800">
                   {category.title}
                 </span>
               </div>

@@ -1125,7 +1125,7 @@ export default function ProteinCalculator() {
 
                   <p
                     className="
-                      mt-2 text-[10px] font-bold
+                      mt-2 text-[12px] font-bold
                       leading-3 text-slate-700
                     "
                   >
@@ -1135,8 +1135,8 @@ export default function ProteinCalculator() {
                   {subtitle && (
                     <p
                       className="
-                        text-[8px] font-bold leading-3
-                        text-slate-700 sm:text-[10px]
+                        text-[10px] font-bold leading-3
+                        text-slate-700 sm:text-[12px]
                       "
                     >
                       {subtitle}
@@ -1185,13 +1185,13 @@ export default function ProteinCalculator() {
                         }
                       `}
                     >
-                      <Icon size={22} />
+                      <Icon size={23} />
                     </span>
 
                     <span
                       className={`
                         max-w-full text-center text-[9px]
-                        font-semibold leading-tight sm:text-[10px]
+                        font-semibold leading-tight sm:text-[12px]
                         ${
                           selected
                             ? "text-protein-dark"
@@ -1240,7 +1240,7 @@ export default function ProteinCalculator() {
                       >
                         <span
                           className={`
-                            grid h-11 w-11 place-items-center
+                            grid h-10 w-10 place-items-center
                             rounded-full border transition-all duration-200
                             ${
                               selected
@@ -1462,7 +1462,7 @@ export default function ProteinCalculator() {
 
                 <span
                   className={`
-                    mt-1.5 rounded-full px-2 py-1 text-[9px] font-bold
+                    mt-1.5 rounded-full px-2 py-1 text-[10px] font-bold
                     ${
                       result.calculated
                         ? "bg-blue-50 text-blue-600"
@@ -1488,7 +1488,7 @@ export default function ProteinCalculator() {
                   {result.calculated ? `${result.protein}g` : "--"}
                 </p>
 
-                <p className="mt-1 text-[9px] leading-3 text-slate-400">
+                <p className="mt-1 text-[11px] leading-3 text-slate-400">
                   Recommended daily need
                 </p>
               </div>
@@ -1511,7 +1511,7 @@ export default function ProteinCalculator() {
               <ArrowRight size={16} />
             </button>
 
-            <p className="mt-1.5 text-center text-[8px] leading-3 text-slate-400">
+            <p className="mt-1.5 text-center text-[12px] leading-3 text-slate-400">
               Results are estimates. Consult a professional for medical advice.
             </p>
           </div>

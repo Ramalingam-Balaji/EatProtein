@@ -31,11 +31,11 @@ export default function Footer() {
             <img
               src={eatProteinIcon}
               alt="EatProtein"
-              className="h-12 w-auto object-contain"
+              className="h-16 w-auto object-contain"
             />
           </div>
 
-          <p className="mt-3 max-w-md text-xs leading-5 text-green-100/70">
+          <p className="mt-3 max-w-md text-sm leading-5 text-green-100/70">
             Healthy Food • Fit Life • Better You. Discover protein-rich
             foods and make smarter nutrition choices every day.
           </p>
@@ -51,7 +51,7 @@ export default function Footer() {
                 {item.type === "route" ? (
                   <Link
                     to={item.path}
-                    className="text-xs text-green-100/70 transition-colors hover:text-white"
+                    className="text-sm text-green-100/70 transition-colors hover:text-white"
                   >
                     {item.label}
                   </Link>
@@ -59,7 +59,7 @@ export default function Footer() {
                   <button
                     type="button"
                     onClick={() => goTo(item.id)}
-                    className="text-left text-xs text-green-100/70 transition-colors hover:text-white"
+                    className="text-left text-sm text-green-100/70 transition-colors hover:text-white"
                   >
                     {item.label}
                   </button>
@@ -71,7 +71,7 @@ export default function Footer() {
             <button
               type="button"
               onClick={() => goTo(appPromoItem.id)}
-              className="text-left text-xs text-green-100/70 transition-colors hover:text-white"
+              className="text-left text-sm text-green-100/70 transition-colors hover:text-white"
             >
               {appPromoItem.label}
             </button>
@@ -82,7 +82,7 @@ export default function Footer() {
         <div>
           <h3 className="font-bold">About EatProtein</h3>
 
-          <p className="mt-3 text-xs leading-5 text-green-100/70">
+          <p className="mt-3 text-sm leading-5 text-green-100/70">
             A nutrition-first platform concept that helps people discover,
             understand and choose better protein foods.
           </p>
@@ -90,7 +90,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="mx-auto mt-7 flex max-w-[1450px] items-center justify-between border-t border-white/10 pt-5 text-[10px] text-green-100/50">
+      <div className="mx-auto mt-7 flex max-w-[1450px] items-center justify-between border-t border-white/10 pt-5 text-[12px] text-green-100/50">
         <span>© {new Date().getFullYear()} EatProtein. All rights reserved.</span>
 
         <button

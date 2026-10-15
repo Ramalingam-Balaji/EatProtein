@@ -187,8 +187,8 @@ export default function HeroSection() {
                       mx-auto
                       mb-2
                       grid
-                      h-11
-                      w-11
+                      h-12
+                      w-12
                       place-items-center
                       rounded-full
                       border
@@ -206,7 +206,7 @@ export default function HeroSection() {
 
                   <p
                     className="
-                      text-[10px]
+                      text-[12px]
                       font-semibold
                       leading-3
                       text-slate-800
@@ -217,7 +217,7 @@ export default function HeroSection() {
 
                   <p
                     className="
-                      text-[10px]
+                      text-[12px]
                       font-semibold
                       leading-3
                       text-slate-800

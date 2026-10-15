@@ -106,7 +106,7 @@ export default function HowItWorks() {
                 </h3>
 
                 {/* Step Description */}
-                <p className="mt-1 whitespace-pre-line text-xs leading-[1.6] text-slate-600">
+                <p className="mt-1 whitespace-pre-line text-sm leading-[1.6] text-slate-600">
                   {text}
                 </p>
               </div>

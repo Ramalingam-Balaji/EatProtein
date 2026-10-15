@@ -110,7 +110,7 @@ export default function Navbar() {
           <img
             src={eatProteinIcon}
             alt="EatProtein"
-            className="h-10 w-auto object-contain sm:h-12"
+            className="h-10 w-auto object-contain sm:h-16"
           />
         </button>
 

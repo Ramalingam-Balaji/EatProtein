@@ -25,7 +25,7 @@ export default function AppPromo() {
     <Apple size={24} fill="white" />
 
     <span>
-      <small className="block text-[7px]">
+      <small className="block text-[8px]">
         Download on the
       </small>
 
@@ -45,7 +45,7 @@ export default function AppPromo() {
     <Play size={22} fill="white" />
 
     <span>
-      <small className="block text-[7px]">
+      <small className="block text-[8px]">
         GET IT ON
       </small>
 
