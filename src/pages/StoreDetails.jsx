@@ -2220,6 +2220,7 @@
 
 // export default StoreDetails;
 
+
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -2240,7 +2241,7 @@ import {
   STORE_FILTER_LABELS,
 } from "../data/foodStoreItems";
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 6;
 
 const slugify = (value = "") =>
   String(value)
@@ -2331,7 +2332,8 @@ function StoreDetails() {
     return products.filter((product) => {
       const matchesCategory =
         activeCategory === "All" ||
-        product.category?.toLowerCase() === activeCategory.toLowerCase();
+        product.category?.toLowerCase() ===
+          activeCategory.toLowerCase();
 
       const productLabels = product.labels || [];
 
@@ -2359,6 +2361,7 @@ function StoreDetails() {
     });
   }, [products, activeCategory, activeLabel, search]);
 
+  // Six items per page
   const totalPages = Math.ceil(
     filteredProducts.length / ITEMS_PER_PAGE
   );
@@ -2612,7 +2615,7 @@ function StoreDetails() {
           </div>
         </section>
 
-        {/* Products */}
+        {/* Food Items: two columns, six items per page */}
         <section id="store-products" className="scroll-mt-24">
           <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -2643,88 +2646,119 @@ function StoreDetails() {
           </div>
 
           {visibleProducts.length > 0 ? (
-            <div className="space-y-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-4 lg:gap-5">
               {visibleProducts.map((product) => (
                 <article
                   key={product.id}
-                  className="flex min-w-0 flex-col gap-3 rounded-xl border border-gray-100 bg-white p-3 shadow-sm transition hover:border-[#b7ddbf] hover:shadow-md sm:flex-row sm:items-center sm:gap-4 sm:p-4"
+                  className="flex min-w-0 flex-col gap-3 rounded-xl border border-gray-100 bg-white p-3 shadow-sm transition hover:border-[#b7ddbf] hover:shadow-md sm:p-4"
                 >
                   {/* Product image */}
-                  <div className="h-36 w-full shrink-0 overflow-hidden rounded-lg bg-[#f1f7ef] sm:h-[100px] sm:w-[115px] lg:h-[110px] lg:w-[130px]">
-                    {product.image ? (
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        loading="lazy"
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center">
-                        <ShoppingBasket
-                          size={32}
-                          className="text-[#087b4b]"
+                  <div className="flex min-w-0 items-start gap-3">
+                    <div className="h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-[#f1f7ef] sm:h-28 sm:w-40">
+                      {product.image ? (
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          loading="lazy"
+                          className="h-full w-full object-cover"
                         />
-                      </div>
-                    )}
-                  </div>
+                      ) : (
+                        <div className="flex h-full items-center justify-center">
+                          <ShoppingBasket
+                            size={30}
+                            className="text-[#087b4b]"
+                          />
+                        </div>
+                      )}
+                    </div>
 
-                  {/* Product information */}
-                  <div className="min-w-0 flex-1">
-                    <h3 className="text-sm font-extrabold text-[#075c40] sm:text-base">
-                      {product.name}
-                    </h3>
+                    {/* Product information */}
+                    <div className="min-w-0 flex-1">
+                      <h3 className="break-words text-sm font-extrabold text-[#075c40] sm:text-base">
+                        {product.name}
+                      </h3>
 
-                    {product.description && (
-                      <p className="mt-1 text-xs leading-5 text-gray-500 sm:text-sm">
-                        {product.description}
-                      </p>
-                    )}
-
-                    <p className="mt-2 text-base font-extrabold text-gray-900">
-                      ₹
-                      {Number(product.price).toLocaleString("en-IN", {
-                        maximumFractionDigits: 2,
-                      })}
-                    </p>
-
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      {product.category && (
-                        <span className="rounded-full bg-gray-100 px-2 py-1 text-[10px] font-semibold text-gray-600 sm:text-xs">
-                          {product.category}
-                        </span>
+                      {product.description && (
+                        <p className="mt-1 line-clamp-3 text-xs leading-5 text-gray-500 sm:text-sm">
+                          {product.description}
+                        </p>
                       )}
 
-                      {(product.labels || []).map((label) => (
-                        <span
-                          key={label}
-                          className="rounded-full bg-[#eaf7ec] px-2 py-1 text-[10px] font-semibold text-[#087b4b] sm:text-xs"
-                        >
-                          {label}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Protein information */}
-                  <div className="flex shrink-0 items-center justify-center gap-3 rounded-lg bg-[#f5faf4] px-4 py-3 sm:min-w-[100px]">
-                    <div className="text-center">
-                      <p className="text-[10px] text-gray-500">Protein</p>
-                      <p className="mt-1 text-sm font-extrabold text-[#075c40]">
-                        {product.protein ?? "—"} g
+                      <p className="mt-2 text-base font-extrabold text-gray-900">
+                        ₹
+                        {Number(product.price).toLocaleString("en-IN", {
+                          maximumFractionDigits: 2,
+                        })}
                       </p>
                     </div>
                   </div>
 
-                  {/* Add button */}
-                  <button
-                    type="button"
-                    onClick={() =>
-                      window.alert(`${product.name} selected`)
-                    }
-                    className="w-full shrink-0 rounded-lg bg-[#087b4b] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#075c40] sm:w-auto"
-                  >
-                    ADD
-                  </button>
+                  {/* Category and labels */}
+                  {/*<div className="flex flex-wrap gap-1.5">
+                    {product.category && (
+                      <span className="rounded-full bg-gray-100 px-2 py-1 text-[10px] font-semibold text-gray-600 sm:text-xs">
+                        {product.category}
+                      </span>
+                    )}
+
+                    {(product.labels || []).map((label) => (
+                      <span
+                        key={label}
+                        className="rounded-full bg-[#eaf7ec] px-2 py-1 text-[10px] font-semibold text-[#087b4b] sm:text-xs"
+                      >
+                        {label}
+                      </span>
+                    ))}
+                  </div>*/}
+
+                 
+{/* Protein, Calories, Quantity and Add button */}
+<div className="mt-auto border-t border-gray-100 pt-3">
+  <div className="grid grid-cols-4 gap-2">
+    {/* Protein */}
+    <div className="flex min-w-0 flex-col items-center justify-center rounded-lg bg-[#f5faf4] px-1 py-2">
+      <p className="text-[10px] text-gray-500 sm:text-xs">
+        Protein
+      </p>
+      <p className="mt-1 text-sm font-extrabold text-[#075c40]">
+        {product.protein ?? "—"} g
+      </p>
+    </div>
+
+    {/* Calories */}
+    <div className="flex min-w-0 flex-col items-center justify-center rounded-lg bg-[#f5faf4] px-1 py-2">
+      <p className="text-[10px] text-gray-500 sm:text-xs">
+        Calories
+      </p>
+      <p className="mt-1 text-sm font-extrabold text-[#075c40]">
+        {product.calories != null ? `${product.calories}` : "—"} kcal
+      </p>
+     {/* <p className="text-[9px] text-gray-500"></p>*/}
+    </div>
+
+    {/* Quantity */}
+    <div className="flex min-w-0 flex-col items-center justify-center rounded-lg bg-[#f5faf4] px-1 py-2">
+      <p className="text-[10px] text-gray-500 sm:text-xs">
+        Quantity
+      </p>
+      <p className="mt-1 break-words text-center text-xs font-extrabold text-[#075c40] sm:text-sm">
+        {product.quantity ?? "—"}
+      </p>
+    </div>
+
+    {/* Add button — same size as the information boxes */}
+    <button
+      type="button"
+      onClick={() =>
+        window.alert(`${product.name} selected`)
+      }
+      className="flex min-w-0 items-center justify-center rounded-lg bg-[#087b4b] px-1 py-2 text-xs font-bold text-white transition hover:bg-[#075c40] sm:text-sm"
+    >
+      ADD
+    </button>
+  </div>
+</div>
+
                 </article>
               ))}
             </div>
@@ -2780,7 +2814,9 @@ function StoreDetails() {
                     className="inline-flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-[#075c40] hover:bg-[#eaf7ec] disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <ChevronLeft size={16} />
-                    <span className="hidden sm:inline">Previous</span>
+                    <span className="hidden sm:inline">
+                      Previous
+                    </span>
                   </button>
 
                   {Array.from(

@@ -6,13 +6,13 @@ export const BENEFITS = [
 ];
 
 export const CATEGORIES = [
-  { title: "Fruits & Vegetables", image: "/assets/category-fruits.jpg" },
-  { title: "Meat & Seafood", image: "/assets/category-meat.jpg" },
-  { title: "Eggs & Dairy", image: "/assets/category-eggs.jpg" },
-  { title: "Nuts & Seeds", image: "/assets/category-nuts.jpg" },
-  { title: "Pulses & Plant Protein", image: "/assets/category-pulses.jpg" },
-  { title: "Protein Snacks", image: "/assets/category-snacks.jpg" },
-  { title: "Healthy Alternatives", image: "/assets/category-alternatives.jpg" }
+  { title: "Fruits & Vegetables", image: "/assets/category-fruits.png" },
+  { title: "Meat & Seafood", image: "/assets/category-meat.png" },
+  { title: "Eggs & Dairy", image: "/assets/category-eggs.png" },
+  { title: "Nuts & Seeds", image: "/assets/category-nuts.png" },
+  { title: "Pulses & Plant Protein", image: "/assets/category-pulses.png" },
+  { title: "Protein Snacks", image: "/assets/category-snacks.png" },
+  { title: "Healthy Alternatives", image: "/assets/category-alternatives.png" }
 ];
 
 export const PROFILES = ["Adult", "Bodybuilder", "Pregnant Woman", "Feeding Mother", "Kid",];

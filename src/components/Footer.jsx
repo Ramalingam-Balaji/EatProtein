@@ -93,13 +93,20 @@ export default function Footer() {
       <div className="mx-auto mt-7 flex max-w-[1450px] items-center justify-between border-t border-white/10 pt-5 text-[12px] text-green-100/50">
         <span>© {new Date().getFullYear()} EatProtein. All rights reserved.</span>
 
-        <button
-          type="button"
-          onClick={() => goTo("home")}
-          className="flex items-center gap-1 transition-colors hover:text-white"
-        >
-          Back to top <ArrowUp size={12} />
-        </button>
+  
+<button
+  type="button"
+  onClick={() =>
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    })
+  }
+  className="flex items-center gap-1 transition-colors hover:text-white"
+>
+  Back to top <ArrowUp size={12} />
+</button>
+
       </div>
     </footer>
   );
