@@ -162,6 +162,59 @@ export default function HeroSection() {
           </p>
 
           {/* =================================================
+              EXPLORE BUTTON
+          ================================================= */}
+
+          <div className="mt-5 flex flex-wrap items-center gap-3">
+  {/* Explore High Protein Foods */}
+  <button
+    onClick={() =>
+      document.getElementById("foods")?.scrollIntoView({
+        behavior: "smooth",
+      })
+    }
+    className="
+      flex w-fit items-center gap-2
+      rounded-full
+      bg-gradient-to-r from-protein-orange to-orange-500
+      px-7 py-3
+      text-sm font-bold text-white
+      shadow-md
+      transition duration-300
+      hover:-translate-y-0.5
+    "
+  >
+    Explore High Protein Foods
+    <ArrowRight size={17} />
+  </button>
+
+  {/* Calculate Your Needs */}
+  <button
+    onClick={() =>
+      document.getElementById("calculator")?.scrollIntoView({
+        behavior: "smooth",
+      })
+    }
+    className="
+      flex w-fit items-center gap-2
+      rounded-full
+      border-2 border-green-700
+      bg-transparent
+      px-7 py-3
+      text-sm font-bold text-green-800
+      transition-all duration-300
+      hover:-translate-y-0.5
+      hover:bg-green-700
+      hover:text-white
+      hover:shadow-md
+    "
+  >
+    Calculate Your Needs
+    {/* <ArrowRight size={17} /> */}
+  </button>
+</div>
+
+          {/* =================================================
               BENEFITS
           ================================================= */}
 
@@ -230,42 +283,7 @@ export default function HeroSection() {
             })}
           </div>
 
-          {/* =================================================
-              EXPLORE BUTTON
-          ================================================= */}
-
-          <button
-            onClick={() =>
-              document
-                .getElementById("foods")
-                ?.scrollIntoView({
-                  behavior: "smooth",
-                })
-            }
-            className="
-              mt-5
-              flex
-              w-fit
-              items-center
-              gap-2
-              rounded-full
-              bg-gradient-to-r
-              from-protein-orange
-              to-orange-500
-              px-7
-              py-3
-              text-sm
-              font-bold
-              text-white
-              shadow-md
-              transition
-              hover:-translate-y-0.5
-            "
-          >
-            Explore High Protein Foods
-
-            <ArrowRight size={17} />
-          </button>
+          
         </div>
 
         {/* =====================================================

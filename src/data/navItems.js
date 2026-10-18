@@ -26,12 +26,12 @@ export const navItems = [
     type: "route",
   },
   { label: "About", id: "about", type: "section" },
-   { label: "Refer A Friend", id: "refer", type: "section" },
-  {
-    label: "Contact Us",
-    path: "/contact",
-    type: "route",
-  },
+  //  { label: "Refer A Friend", id: "refer", type: "section" },
+  // {
+  //   label: "Contact Us",
+  //   path: "/contact",
+  //   type: "route",
+  // },
 ];
 
 export const appPromoItem = {

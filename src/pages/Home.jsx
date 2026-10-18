@@ -7,8 +7,9 @@ import FoodCategories from "../components/FoodCategories";
 import AppPromo from "../components/AppPromo";
 import HowItWorks from "../components/HowItWorks";
 import FranchiseSection from "../components/FranchiseSection";
-import About from "../components/About";
-import Refer from "../components/Refer";
+import ProteinPacks from "../components/ProteinPacks";
+//import About from "../components/About";
+//import Refer from "../components/Refer";
 
 export default function Home() {
   const location = useLocation();
@@ -60,33 +61,43 @@ useEffect(() => {
           <HeroSection />
         </section>
 
+         <section id="protein-calculator" className="scroll-mt-24">
+          <ProteinCalculator />
+        </section>
+
+        <section id="protein-packs" className="scroll-mt-24">
+          <ProteinPacks />
+        </section>
+
         <section id="high-protein-foods" className="scroll-mt-24">
           <FoodCategories />
         </section>
 
-        <section id="protein-calculator" className="scroll-mt-24">
-          <ProteinCalculator />
-        </section>
+        
+
+       
 
         <section id="app-promo" className="scroll-mt-24">
           <AppPromo />
         </section>
 
-        <section id="how-it-works" className="scroll-mt-24">
-          <HowItWorks />
-        </section>
+       
 
         
 
-        <section id="about" className="scroll-mt-24">
+       {/* <section id="about" className="scroll-mt-24">
           <About />
         </section>
         <section id="refer" className="scroll-mt-24">
           <Refer />
-        </section>
+        </section> */}
       
       <section id="franchise" className="scroll-mt-24">
           <FranchiseSection />
+        </section>
+
+         <section id="how-it-works" className="scroll-mt-24">
+          <HowItWorks />
         </section>
         
       </main>

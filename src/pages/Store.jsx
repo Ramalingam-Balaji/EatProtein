@@ -1,334 +1,477 @@
-import React, { useState } from "react";
+
+import { useState } from "react";
 import {
   ArrowRight,
-  TrendingUp,
-  Users,
-  Store as StoreIcon,
-  Handshake,
+  UsersRound,
+  ShoppingCart,
+  Megaphone,
+  Heart,
   MapPin,
-  Phone,
-  Mail,
-  X,
-  Send,
-  ShieldCheck,
-  CheckCircle2,
-  Navigation,
-  Building2,
   ChartNoAxesCombined,
+  ClipboardList,
+  Store,
+  GraduationCap,
+  Smartphone,
+  PackageCheck,
+  CheckCircle2,
+  FileText,
+  Boxes,
+  ShieldCheck,
+  Search,
+  LoaderCircle,
+  Leaf,
 } from "lucide-react";
 
-const CATEGORIES = [
-  "Veg",
-  "Non Veg",
-  "Restaurants",
-  "Eggs",
-  "Dairy Foods",
-  "Fruits & Vegetables",
-  "Bakery & Sweets",
-  "Home Foods",
-  "Diet",
-];
+/* =========================================
+   STORE PARTNER PAGE DATA
+========================================= */
 
-const BENEFITS = [
+const benefits = [
   {
-    icon: TrendingUp,
-    title: "Grow Your Revenue",
+    icon: UsersRound,
+    title: "More Visibility",
     description:
-      "Increase your store's earnings by offering in-demand, premium protein-rich products loved by health-conscious customers.",
-    color: "bg-green-100 text-green-700",
+      "Get discovered by customers in your local area through the EatProtein app.",
+    iconStyle: "bg-green-100 text-green-700",
   },
   {
-    icon: Users,
-    title: "Attract the Right Customers",
+    icon: ShoppingCart,
+    title: "Increase Store Orders",
     description:
-      "Reach a targeted audience of health-focused buyers through our trusted brand and app-based discovery.",
-    color: "bg-orange-100 text-orange-600",
+      "Receive online orders from nearby customers looking for healthy, high-protein foods.",
+    iconStyle: "bg-orange-100 text-orange-600",
   },
   {
-    icon: StoreIcon,
-    title: "Marketing & Sales Support",
+    icon: Megaphone,
+    title: "Marketing Support",
     description:
-      "Get promotional materials, in-app promotions, and marketing support to improve your visibility and sales.",
-    color: "bg-lime-100 text-lime-700",
+      "Get featured in the app, promotions and local marketing campaigns.",
+    iconStyle: "bg-blue-100 text-blue-700",
   },
   {
-    icon: Handshake,
-    title: "Stand Out Locally",
+    icon: Heart,
+    title: "Be Part of a Healthier Community",
     description:
-      "Build your local presence and connect with customers looking for quality food products in your neighborhood.",
-    color: "bg-emerald-100 text-emerald-700",
+      "Support people in making better food choices and build long-term customer trust.",
+    iconStyle: "bg-rose-100 text-rose-600",
   },
 ];
 
-const STEPS = [
+const onboardingSteps = [
   {
-    number: "01",
-    title: "Submit Application",
+    number: "1",
+    icon: FileText,
+    title: "Register Your Store",
     description:
-      "Fill out the store registration form with your business details.",
-    color: "bg-green-600",
+      "Fill out the store registration form with your basic details.",
+    color: "bg-green-700",
   },
   {
-    number: "02",
-    title: "Verification Process",
+    number: "2",
+    icon: Store,
+    title: "Verification & Setup",
     description:
-      "Our team will verify your store credentials and business license.",
+      "Our team verifies your details and helps you set up your store on the platform.",
     color: "bg-orange-500",
   },
   {
-    number: "03",
-    title: "Agreement & Setup",
+    number: "3",
+    icon: GraduationCap,
+    title: "List Your Products",
     description:
-      "Sign the partnership agreement and receive your starter kit.",
-    color: "bg-lime-600",
+      "Add your high-protein products with accurate information.",
+    color: "bg-blue-600",
   },
   {
-    number: "04",
-    title: "Start Selling",
+    number: "4",
+    icon: Smartphone,
+    title: "Start Receiving Orders",
     description:
-      "Begin selling EatProtein products with our ongoing support.",
-    color: "bg-emerald-700",
+      "Go live and start getting orders from nearby customers through the EatProtein app.",
+    color: "bg-green-700",
   },
 ];
 
-const INITIAL_FORM = {
-  storeName: "",
-  ownerName: "",
-  email: "",
-  phone: "",
-  categories: [],
-  address: "",
-  city: "",
-  state: "",
-  pincode: "",
-  radius: "3",
-  franchiseOwner: "",
-  gst: "",
-  fssai: "",
-};
+const supportItems = [
+  "Store listing on EatProtein app",
+  "Guidance on product listing and nutrition information",
+  "Marketing and promotional support",
+  "Ongoing support from our team",
+  "Access to a community of health-conscious customers",
+];
 
-export default function Store() {
-  const [showModal, setShowModal] = useState(false);
-  const [form, setForm] = useState(INITIAL_FORM);
-  const [message, setMessage] = useState("");
-  const [location, setLocation] = useState("");
+const requirements = [
+  {
+    icon: Store,
+    text: "Local food stores, supermarkets, meat shops, organic stores, or healthy food retailers",
+  },
+  {
+    icon: MapPin,
+    text: "Must be in our serviceable area",
+  },
+  {
+    icon: FileText,
+    text: "Valid business registration (as per local norms)",
+  },
+  {
+    icon: Boxes,
+    text: "Ability to provide quality products and fulfill orders",
+  },
+  {
+    icon: Heart,
+    text: "Commitment to offer accurate product information",
+  },
+];
 
-  const updateField = (event) => {
+const communityBenefits = [
+  {
+    icon: UsersRound,
+    text: "More Customers",
+    color: "bg-green-100 text-green-700",
+  },
+  {
+    icon: ChartNoAxesCombined,
+    text: "Higher Order Volume",
+    color: "bg-green-100 text-green-700",
+  },
+  {
+    icon: UsersRound,
+    text: "Local Community Trust",
+    color: "bg-blue-100 text-blue-700",
+  },
+  {
+    icon: Heart,
+    text: "Be Part of a Bigger Mission",
+    color: "bg-rose-100 text-rose-600",
+  },
+];
+
+/* =========================================
+   REUSABLE SECTION LABEL
+========================================= */
+
+function SectionLabel({ children }) {
+  return (
+    <span className="inline-flex w-fit items-center rounded-full bg-green-100 px-3 py-1 text-[10px] font-extrabold uppercase tracking-wide text-green-800 sm:text-xs">
+      {children}
+    </span>
+  );
+}
+
+/* =========================================
+   REUSABLE SECTION HEADING
+========================================= */
+
+function SectionHeading({ eyebrow, title, description }) {
+  return (
+    <div className="mx-auto mb-7 max-w-3xl text-center sm:mb-9">
+      {eyebrow && (
+        <p className="mb-2 text-[10px] font-extrabold uppercase tracking-[0.18em] text-orange-600 sm:text-xs">
+          {eyebrow}
+        </p>
+      )}
+
+      <h2 className="text-2xl font-black leading-tight tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
+        {title}
+      </h2>
+
+      {description && (
+        <p className="mx-auto mt-2 max-w-2xl text-xs leading-6 text-slate-600 sm:text-sm">
+          {description}
+        </p>
+      )}
+    </div>
+  );
+}
+
+/* =========================================
+   REUSABLE CHECK ITEM
+========================================= */
+
+function CheckItem({ children }) {
+  return (
+    <li className="flex items-start gap-2.5 text-xs leading-5 text-slate-600 sm:text-sm sm:leading-6">
+      <CheckCircle2
+        size={19}
+        className="mt-0.5 shrink-0 fill-green-700 text-white"
+      />
+      <span>{children}</span>
+    </li>
+  );
+}
+
+/* =========================================
+   STORE PARTNER PAGE
+========================================= */
+
+export default function StorePartner() {
+  const [formData, setFormData] = useState({
+    storeName: "",
+    ownerName: "",
+    phone: "",
+    email: "",
+    storeType: "",
+    message: "",
+  });
+
+  const [formStatus, setFormStatus] = useState({
+    type: "",
+    message: "",
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (event) => {
     const { name, value } = event.target;
-    setForm((previous) => ({ ...previous, [name]: value }));
-  };
 
-  const toggleCategory = (category) => {
-    setForm((previous) => ({
+    setFormData((previous) => ({
       ...previous,
-      categories: previous.categories.includes(category)
-        ? previous.categories.filter((item) => item !== category)
-        : [...previous.categories, category],
+      [name]: value,
     }));
+
+    setFormStatus({ type: "", message: "" });
   };
 
-  const useMyLocation = () => {
-    if (!navigator.geolocation) {
-      setMessage("Location access is not supported by this browser.");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      ({ coords }) => {
-        setLocation(`${coords.latitude}, ${coords.longitude}`);
-        setMessage("Location captured successfully.");
-      },
-      () => {
-        setMessage(
-          "Location access was denied. Enter your city or address manually."
-        );
-      }
-    );
-  };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (form.categories.length === 0) {
-      setMessage("Please select at least one store category.");
-      return;
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    setFormStatus({ type: "", message: "" });
+
+    try {
+      const response = await fetch("/api/store-partner-inquiry", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(
+          result.message ||
+            "Unable to submit your registration. Please try again."
+        );
+      }
+
+      setFormStatus({
+        type: "success",
+        message:
+          result.message ||
+          "Your store registration has been sent successfully. Our team will contact you.",
+      });
+
+      setFormData({
+        storeName: "",
+        ownerName: "",
+        phone: "",
+        email: "",
+        storeType: "",
+        message: "",
+      });
+    } catch (error) {
+      setFormStatus({
+        type: "error",
+        message:
+          error.message ||
+          "Something went wrong. Please try again later.",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
-
-    // Connect your backend/API here to save the application.
-    console.log("Store partnership application:", {
-      ...form,
-      location,
-    });
-
-    setMessage(
-      "Your form is ready! Connect your backend to submit and save applications."
-    );
   };
 
-  const mapQuery = encodeURIComponent(
-    location || form.address || form.city || "India"
-  );
+  const scrollToRegistration = () => {
+    document.getElementById("store-registration")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
+  const scrollToBenefits = () => {
+    document.getElementById("store-benefits")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
 
   return (
-    <main className="min-h-screen overflow-hidden bg-white text-slate-800">
-      {/* HERO */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#f0fbea] via-white to-[#fff0df] px-5 py-16 sm:py-20 lg:py-24">
-        <div className="pointer-events-none absolute -right-24 -top-20 h-80 w-80 rounded-full bg-green-200/40 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-orange-200/40 blur-3xl" />
+    <main className="min-h-screen overflow-hidden bg-white font-sans text-slate-900">
+      {/* =====================================
+          1. HERO SECTION
+      ===================================== */}
 
-        <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
-          <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-green-200 bg-white px-4 py-2 text-xs font-bold uppercase tracking-wider text-green-800 shadow-sm">
-              <StoreIcon size={15} />
-              Become an EatProtein Partner
-            </span>
+      <section
+        id="store-partner"
+        className="relative isolate overflow-hidden bg-[#f0faed]"
+      >
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#f6fff3] via-[#f0faed] to-[#e5f4d9]" />
 
-            <h1 className="mt-6 text-4xl font-black leading-tight tracking-tight text-[#173b27] sm:text-5xl lg:text-6xl">
-              Grow Your Store.
-              <span className="block text-green-600">
-                Grow With Us.
+        <div className="mx-auto grid max-w-[1400px] items-center gap-7 px-4 py-9 sm:px-6 sm:py-12 lg:grid-cols-2 lg:gap-5 lg:px-10 lg:py-14">
+          {/* Hero content */}
+
+          <div className="relative z-20 order-1">
+            <SectionLabel>For Store Owners</SectionLabel>
+
+            <h1 className="mt-3 max-w-xl text-4xl font-black leading-[1.08] tracking-tight text-[#101e28] sm:text-5xl lg:text-[52px]">
+              Join EatProtein
+              <span className="block">
+                as a{" "}
+                <span className="text-green-700">Store Partner</span>
               </span>
             </h1>
 
-            <p className="mt-5 max-w-xl text-base leading-7 text-slate-600 sm:text-lg">
-              Join the EatProtein network and connect your business
-              with customers who care about healthy food, quality
-              nutrition, and better everyday choices.
+            <p className="mt-4 max-w-lg text-sm leading-6 text-slate-700 sm:text-base sm:leading-7">
+              List your store, reach more customers and grow your sales
+              with EatProtein.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div className="mt-5 flex flex-wrap gap-3">
               <button
                 type="button"
-                onClick={() => {
-                  setMessage("");
-                  setShowModal(true);
-                }}
-                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#f97316] to-orange-500 px-6 py-4 font-bold text-white shadow-lg shadow-orange-200 transition hover:-translate-y-1 hover:shadow-xl"
+                onClick={scrollToRegistration}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#f4510b] px-5 py-3 text-xs font-extrabold text-white shadow-md shadow-orange-600/15 transition hover:-translate-y-0.5 hover:bg-orange-600 sm:px-6 sm:text-sm"
               >
-                Apply for Store Partnership
-                <ArrowRight size={18} />
+                Register Your Store
+                <ArrowRight size={16} />
               </button>
 
-              <a
-                href="#benefits"
-                className="inline-flex items-center gap-2 rounded-xl border border-green-200 bg-white px-6 py-4 font-bold text-green-800 transition hover:bg-green-50"
+              <button
+                type="button"
+                onClick={scrollToBenefits}
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-green-700/50 bg-white/90 px-5 py-3 text-xs font-extrabold text-green-800 transition hover:bg-green-50 sm:px-6 sm:text-sm"
               >
-                Explore Benefits
-              </a>
+                View Benefits
+              </button>
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm text-slate-600">
-              <span className="flex items-center gap-2">
-                <CheckCircle2 size={17} className="text-green-600" />
-                Business support
-              </span>
-              <span className="flex items-center gap-2">
-                <CheckCircle2 size={17} className="text-green-600" />
-                Local discovery
-              </span>
+            {/* Four small hero benefits */}
+
+            <div className="mt-7 grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-4 sm:gap-3">
+              {[
+                { icon: UsersRound, text: "Reach Nearby Customers" },
+                { icon: ChartNoAxesCombined, text: "Increase Store Orders" },
+                { icon: Megaphone, text: "Marketing Support" },
+                { icon: Heart, text: "Be Part of a Healthier Community" },
+              ].map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <div
+                    key={item.text}
+                    className="flex flex-col items-center text-center"
+                  >
+                    <div className="grid h-10 w-10 place-items-center rounded-full bg-white/90 text-green-800 shadow-sm sm:h-11 sm:w-11">
+                      <Icon size={22} strokeWidth={2.2} />
+                    </div>
+
+                    <p className="mt-2 max-w-28 text-[10px] font-bold leading-4 text-slate-800 sm:text-[11px]">
+                      {item.text}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
-          <div className="relative mx-auto w-full max-w-lg">
-            <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-green-200 to-orange-100 opacity-70 blur-xl" />
+          {/* Hero artwork */}
 
-            <div className="relative overflow-hidden rounded-[2rem] border border-white bg-white p-6 shadow-2xl sm:p-9">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-semibold text-slate-500">
-                    Your next business opportunity
-                  </p>
-                  <h2 className="mt-2 text-2xl font-black text-[#173b27]">
-                    EatProtein Store
-                  </h2>
-                </div>
-                <div className="rounded-2xl bg-green-100 p-3 text-green-700">
-                  <Building2 size={30} />
-                </div>
-              </div>
+          <div className="relative order-2 min-w-0">
+            <div className="absolute inset-6 rounded-full bg-green-200/50 blur-3xl" />
 
-              <div className="mt-7 rounded-2xl bg-gradient-to-br from-green-700 via-green-600 to-emerald-500 p-6 text-white">
-                <div className="flex items-center gap-3">
-                  <div className="rounded-xl bg-white p-3 text-green-700">
-                    <StoreIcon size={32} />
-                  </div>
-                  <div>
-                    <p className="text-lg font-black">EAT PROTEIN</p>
-                    <p className="text-sm text-green-50">Store Partner</p>
-                  </div>
-                </div>
+            <img
+              src="/assets/store-partner-hero.png"
+              alt="EatProtein store partner in a healthy food store"
+              fetchPriority="high"
+              className="relative z-10 mx-auto max-h-[420px] w-full rounded-2xl object-contain object-center sm:max-h-[470px] lg:max-h-[500px]"
+            />
 
-                <div className="mt-7 grid grid-cols-2 gap-3">
-                  <div className="rounded-xl bg-white/15 p-4">
-                    <TrendingUp size={22} />
-                    <p className="mt-3 text-sm font-bold">
-                      Business Growth
+            {/* Decorative message cards */}
+
+            <div className="absolute right-0 top-3 z-20 hidden w-40 flex-col gap-2 sm:flex lg:-right-1 lg:top-5">
+              {[
+                { icon: MapPin, text: "Get Discovered by Local Customers" },
+                { icon: ShoppingCart, text: "Receive App Orders" },
+                { icon: ChartNoAxesCombined, text: "Grow Your Business" },
+                { icon: UsersRound, text: "Be Part of a Trusted Platform" },
+              ].map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <div
+                    key={item.text}
+                    className="flex items-center gap-2 rounded-xl border border-green-50 bg-white/95 p-2 shadow-md"
+                  >
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-green-50 text-green-700">
+                      <Icon size={17} />
+                    </span>
+
+                    <p className="text-[9px] font-extrabold leading-3.5 text-slate-800">
+                      {item.text}
                     </p>
                   </div>
-                  <div className="rounded-xl bg-white/15 p-4">
-                    <Users size={22} />
-                    <p className="mt-3 text-sm font-bold">
-                      More Customers
-                    </p>
-                  </div>
-                </div>
-              </div>
+                );
+              })}
+            </div>
 
-              <div className="mt-5 flex items-center gap-3 rounded-xl bg-orange-50 p-4">
-                <div className="rounded-full bg-orange-100 p-3 text-orange-600">
-                  <ChartNoAxesCombined size={23} />
-                </div>
-                <div>
-                  <p className="font-bold text-[#173b27]">
-                    Your Store, More Visible
-                  </p>
-                  <p className="mt-1 text-sm text-slate-600">
-                    Get discovered by local food customers.
-                  </p>
-                </div>
-              </div>
+            <div className="absolute bottom-3 left-3 z-20 rounded-xl bg-white/90 px-3 py-2 shadow-md sm:bottom-5 sm:left-4">
+              <p className="text-[10px] font-extrabold text-green-800 sm:text-xs">
+                Healthy Food Choices
+              </p>
+              <p className="text-[10px] text-slate-600 sm:text-xs">
+                Start Here!
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* WHY PARTNER */}
-      <section id="benefits" className="px-5 py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-2xl text-center">
-            <span className="text-sm font-extrabold uppercase tracking-[0.2em] text-orange-500">
-              Partnership Benefits
-            </span>
-            <h2 className="mt-3 text-3xl font-black text-[#173b27] sm:text-4xl">
-              Why Partner with EatProtein?
-            </h2>
-            <p className="mt-4 leading-7 text-slate-600">
-              More visibility, better customer connections, and
-              support to help your store grow.
-            </p>
-          </div>
+      {/* =====================================
+          2. WHY PARTNER WITH EATPROTEIN
+      ===================================== */}
 
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {BENEFITS.map((benefit) => {
-              const Icon = benefit.icon;
+      <section
+        id="store-benefits"
+        className="scroll-mt-20 px-4 py-9 sm:px-6 sm:py-12 lg:px-10"
+      >
+        <div className="mx-auto max-w-[1400px]">
+          <SectionHeading
+            eyebrow="Partner with a purpose"
+            title={
+              <>
+                Why Partner with{" "}
+                <span className="text-green-700">EatProtein?</span>
+              </>
+            }
+            description="We work with local food stores to make healthy protein foods accessible to more people."
+          />
+
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+            {benefits.map((item) => {
+              const Icon = item.icon;
 
               return (
                 <article
-                  key={benefit.title}
-                  className="group rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-2 hover:border-green-200 hover:shadow-xl"
+                  key={item.title}
+                  className="group rounded-2xl border border-slate-100 bg-white p-4 shadow-[0_4px_18px_rgba(15,23,42,0.025)] transition duration-300 hover:-translate-y-1 hover:border-green-200 hover:shadow-lg sm:p-5"
                 >
                   <div
-                    className={`inline-flex rounded-2xl p-4 ${benefit.color}`}
+                    className={`grid h-11 w-11 place-items-center rounded-xl ${item.iconStyle} transition group-hover:scale-105`}
                   >
-                    <Icon size={27} />
+                    <Icon size={24} />
                   </div>
-                  <h3 className="mt-5 text-lg font-extrabold text-[#173b27]">
-                    {benefit.title}
+
+                  <h3 className="mt-3 text-sm font-black leading-5 text-slate-900 sm:text-base">
+                    {item.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">
-                    {benefit.description}
+
+                  <p className="mt-2 text-xs leading-5 text-slate-600 sm:text-sm sm:leading-6">
+                    {item.description}
                   </p>
-                  <div className="mt-5 h-1 w-12 rounded-full bg-gradient-to-r from-green-600 to-orange-400 transition-all group-hover:w-20" />
                 </article>
               );
             })}
@@ -336,482 +479,488 @@ export default function Store() {
         </div>
       </section>
 
-      {/* PARTNERSHIP HIGHLIGHTS */}
-      <section className="bg-[#fffaf2] px-5 py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl">
-          <div className="text-center">
-            <span className="text-sm font-bold uppercase tracking-widest text-green-700">
-              The EatProtein Advantage
-            </span>
-            <h2 className="mt-3 text-3xl font-black text-[#173b27] sm:text-4xl">
-              A Partnership That Moves You Forward
-            </h2>
-          </div>
+      {/* =====================================
+          3. HOW IT WORKS
+      ===================================== */}
 
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
-            <div className="rounded-2xl border border-green-100 bg-white p-7 shadow-sm">
-              <div className="text-4xl font-black text-green-600">
-                30%
-              </div>
-              <h3 className="mt-2 font-bold text-[#173b27]">
-                Profit Margins
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Explore opportunities to improve profitability on
-                EatProtein products. Actual margins depend on product
-                and partnership terms.
-              </p>
-            </div>
+      <section
+        id="store-how-it-works"
+        className="mx-3 rounded-2xl bg-[#eff9e9] px-4 py-7 sm:mx-5 sm:px-6 sm:py-9 lg:mx-6 lg:px-8"
+      >
+        <div className="mx-auto max-w-[1360px]">
+          <SectionLabel>Simple Onboarding</SectionLabel>
 
-            <div className="rounded-2xl border border-orange-100 bg-white p-7 shadow-sm">
-              <div className="text-4xl font-black text-orange-500">
-                24/7
-              </div>
-              <h3 className="mt-2 font-bold text-[#173b27]">
-                Support Available
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Get assistance with partnership questions and store
-                operations according to your support agreement.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-green-100 bg-white p-7 shadow-sm">
-              <div className="text-4xl font-black text-green-700">
-                500+
-              </div>
-              <h3 className="mt-2 font-bold text-[#173b27]">
-                Partner Stores
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Be part of a growing partner network. Replace this
-                figure with your current verified store count.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* REGISTRATION STEPS */}
-      <section className="bg-slate-50 px-5 py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl">
-          <div className="text-center">
-            <span className="text-sm font-bold uppercase tracking-widest text-orange-500">
-              Simple & Convenient
-            </span>
-            <h2 className="mt-3 text-3xl font-black text-[#173b27] sm:text-4xl">
-              How to Register Your Store
-            </h2>
-            <p className="mt-4 text-slate-600">
-              Four straightforward steps to get started.
-            </p>
-          </div>
-
-          <div className="relative mt-12 grid gap-9 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="absolute left-[12%] right-[12%] top-7 hidden h-0.5 bg-gradient-to-r from-green-300 via-orange-300 to-green-300 lg:block" />
-
-            {STEPS.map((step) => (
-              <div
-                key={step.number}
-                className="relative z-10 text-center"
-              >
-                <div
-                  className={`mx-auto flex h-16 w-16 items-center justify-center rounded-2xl ${step.color} text-xl font-black text-white shadow-lg`}
-                >
-                  {step.number}
-                </div>
-                <h3 className="mt-5 font-extrabold text-[#173b27]">
-                  {step.title}
-                </h3>
-                <p className="mx-auto mt-2 max-w-xs text-sm leading-6 text-slate-600">
-                  {step.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CONTACT CTA */}
-     {/*} <section className="bg-gradient-to-r from-[#176b38] via-[#159447] to-[#f97316] px-5 py-14 text-white sm:py-16">
-        <div className="mx-auto max-w-5xl text-center">
-          <ShieldCheck className="mx-auto" size={38} />
-          <h2 className="mt-4 text-3xl font-black sm:text-4xl">
-            Ready to Partner with Us?
+          <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">
+            How It Works
           </h2>
-          <p className="mt-4 text-sm leading-6 text-white/90 sm:text-base">
-            Join the EatProtein network and bring quality food
-            products to more customers.
+
+          <p className="mt-1 text-xs text-slate-600 sm:text-sm">
+            Get your store live on EatProtein in just a few easy steps.
           </p>
 
-          <div className="mt-7 flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm">
-            <a
-              href="tel:+919440701380"
-              className="inline-flex items-center gap-2 hover:text-orange-100"
-            >
-              <Phone size={17} />
-              +91 9440701380
-            </a>
-            <a
-              href="mailto:support@eatprotein.in"
-              className="inline-flex items-center gap-2 hover:text-orange-100"
-            >
-              <Mail size={17} />
-              support@eatprotein.in
-            </a>
-            <span className="inline-flex items-center gap-2">
-              <MapPin size={17} />
-              Available Nationwide
-            </span>
+          <div className="mt-7 grid gap-7 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+            {onboardingSteps.map((step, index) => {
+              const Icon = step.icon;
+
+              return (
+                <article
+                  key={step.number}
+                  className="relative flex gap-3 sm:flex-col sm:items-start"
+                >
+                  <div className="flex shrink-0 flex-col items-center gap-2 sm:flex-row sm:gap-3">
+                    <span
+                      className={`grid h-8 w-8 place-items-center rounded-full ${step.color} text-xs font-black text-white`}
+                    >
+                      {step.number}
+                    </span>
+
+                    <span className="grid h-12 w-12 place-items-center rounded-full bg-white text-green-800 shadow-sm sm:h-14 sm:w-14">
+                      <Icon size={24} />
+                    </span>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-black text-slate-900 sm:mt-3 sm:text-base">
+                      {step.title}
+                    </h3>
+
+                    <p className="mt-1.5 text-xs leading-5 text-slate-600 sm:text-sm sm:leading-6">
+                      {step.description}
+                    </p>
+                  </div>
+
+                  {index < onboardingSteps.length - 1 && (
+                    <ArrowRight
+                      size={21}
+                      className="absolute -right-1 top-4 hidden text-slate-400 lg:block"
+                    />
+                  )}
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* =====================================
+          4. SUPPORT AND REQUIREMENTS
+      ===================================== */}
+
+      <section
+        id="store-requirements"
+        className="px-4 py-8 sm:px-6 sm:py-10 lg:px-8"
+      >
+        <div className="mx-auto grid max-w-[1400px] gap-5 lg:grid-cols-12 lg:gap-6">
+          {/* What you get */}
+
+          <article className="rounded-2xl border border-slate-100 bg-white p-5 sm:p-6 lg:col-span-5">
+            <SectionLabel>What You Get</SectionLabel>
+
+            <h2 className="mt-2 text-xl font-black tracking-tight sm:text-2xl">
+              Our Support to Grow Your Store
+            </h2>
+
+            <ul className="mt-4 space-y-2">
+              {supportItems.map((item) => (
+                <CheckItem key={item}>{item}</CheckItem>
+              ))}
+            </ul>
+          </article>
+
+          {/* App mockup */}
+
+          <div className="relative flex min-h-[240px] items-end justify-center overflow-hidden rounded-2xl bg-gradient-to-b from-[#f2faed] to-[#e0f2d8] lg:col-span-3">
+            <img
+              src="/assets/eatprotein-app.png"
+              alt="EatProtein mobile application showing food categories"
+              loading="lazy"
+              className="max-h-[320px] w-full object-contain object-bottom"
+            />
           </div>
 
-          <button
-            type="button"
-            onClick={() => {
-              setMessage("");
-              setShowModal(true);
-            }}
-            className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-7 py-4 font-extrabold text-green-800 shadow-lg transition hover:-translate-y-1 hover:bg-orange-50"
-          >
-            Apply for Store Partnership
-            <ArrowRight size={18} />
-          </button>
+          {/* Who can join */}
+
+          <article className="rounded-2xl border border-slate-100 bg-white p-5 sm:p-6 lg:col-span-4">
+            <SectionLabel>Who Can Join</SectionLabel>
+
+            <h2 className="mt-2 text-xl font-black tracking-tight sm:text-2xl">
+              Store Partner Requirements
+            </h2>
+
+            <ul className="mt-4 space-y-3">
+              {requirements.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <li
+                    key={item.text}
+                    className="flex items-start gap-3 text-xs leading-5 text-slate-600 sm:text-sm sm:leading-6"
+                  >
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-green-50 text-green-800">
+                      <Icon size={18} />
+                    </span>
+
+                    <span>{item.text}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </article>
         </div>
-      </section> */}
+      </section>
 
-      {/* APPLICATION MODAL */}
-      {showModal && (
-        <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/60 p-3 backdrop-blur-sm sm:p-6"
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) {
-              setShowModal(false);
-            }
-          }}
-        >
-          <div className="relative flex max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
-            {/* Modal header */}
-            <div className="flex shrink-0 items-center justify-between border-b border-green-100 bg-[#f5fbf2] px-5 py-4 sm:px-7">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-orange-500">
-                  Join Our Network
-                </p>
-                <h2 className="mt-1 text-xl font-black text-[#173b27] sm:text-2xl">
-                  Store Partnership Application
-                </h2>
-              </div>
+      {/* =====================================
+          5. COMMUNITY BANNER
+      ===================================== */}
 
-              <button
-                type="button"
-                onClick={() => setShowModal(false)}
-                aria-label="Close application"
-                className="rounded-xl p-2 text-slate-500 transition hover:bg-white hover:text-red-500"
-              >
-                <X size={24} />
-              </button>
-            </div>
+      <section
+        id="store-community"
+        className="relative isolate overflow-hidden bg-[#164d28]"
+      >
+        <img
+          src="/assets/store-partner-community.png"
+          alt="Healthy food store and local store partner community"
+          loading="lazy"
+          className="absolute inset-0 -z-20 h-full w-full object-cover"
+        />
 
-            {/* Scrollable form */}
-            <form
-              onSubmit={handleSubmit}
-              className="overflow-y-auto p-5 sm:p-7"
+        <div className="absolute inset-0 -z-10 bg-green-950/35" />
+
+        <div className="mx-auto grid max-w-[1400px] items-center gap-5 px-4 py-8 sm:px-6 sm:py-10 lg:grid-cols-[1fr_300px] lg:px-10">
+          {/* Banner message */}
+
+          <div className="max-w-xl rounded-2xl border border-white/70 bg-white/95 p-5 shadow-xl sm:p-6">
+            <SectionLabel>Together for a Healthier Tomorrow</SectionLabel>
+
+            <h2 className="mt-2 text-2xl font-black leading-tight tracking-tight text-slate-900 sm:text-3xl">
+              Grow Your Business.
+              <span className="block text-green-700">
+                Support a Healthier Community.
+              </span>
+            </h2>
+
+            <p className="mt-2 text-xs leading-5 text-slate-600 sm:text-sm sm:leading-6">
+              Join EatProtein as a store partner and be a part of the
+              movement to make high-protein, nutritious foods easily
+              accessible to everyone.
+            </p>
+
+            <button
+              type="button"
+              onClick={scrollToRegistration}
+              className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#f4510b] px-5 py-3 text-xs font-extrabold text-white transition hover:bg-orange-600 sm:text-sm"
             >
-              <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-                {/* Left column */}
-                <div>
-                  <h3 className="mb-5 flex items-center gap-2 font-extrabold text-[#173b27]">
-                    <StoreIcon size={19} className="text-green-600" />
-                    Store Information
+              Register Your Store
+              <ArrowRight size={16} />
+            </button>
+          </div>
+
+          {/* Community benefits */}
+
+          <div className="grid gap-2 rounded-2xl border border-white/60 bg-white/95 p-4 shadow-xl sm:grid-cols-2 lg:grid-cols-1">
+            {communityBenefits.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <div
+                  key={item.text}
+                  className="flex items-center gap-3 rounded-xl p-2"
+                >
+                  <span
+                    className={`grid h-9 w-9 shrink-0 place-items-center rounded-full ${item.color}`}
+                  >
+                    <Icon size={19} />
+                  </span>
+
+                  <p className="text-xs font-extrabold text-slate-800 sm:text-sm">
+                    {item.text}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* =====================================
+          6. STORE REGISTRATION FORM
+      ===================================== */}
+
+      <section
+        id="store-registration"
+        className="scroll-mt-20 bg-white px-3 py-5 sm:px-5 sm:py-7 lg:px-6"
+      >
+        <div className="mx-auto grid max-w-[1400px] gap-6 rounded-2xl border border-green-100 bg-[#f0f9e9] p-4 sm:p-6 lg:grid-cols-[0.8fr_1.8fr] lg:gap-8 lg:p-7">
+          {/* Form introduction */}
+
+          <div className="flex flex-col items-start justify-center">
+            <SectionLabel>Get Started Today</SectionLabel>
+
+            <h2 className="mt-3 text-2xl font-black leading-tight tracking-tight text-slate-900 sm:text-3xl">
+              Register Your Store
+            </h2>
+
+            <p className="mt-3 max-w-sm text-xs leading-6 text-slate-600 sm:text-sm">
+              Share your details and our team will get in touch with you
+              to complete the onboarding process.
+            </p>
+
+            <div className="mt-5 hidden items-center gap-2 text-sm font-bold text-green-800 lg:flex">
+              <ShieldCheck size={21} />
+              Simple and secure registration
+            </div>
+          </div>
+
+          {/* Registration form */}
+
+          <div className="min-w-0 rounded-xl bg-white p-4 shadow-sm sm:p-5">
+            {formStatus.type === "success" ? (
+              <div
+                role="status"
+                aria-live="polite"
+                className="flex min-h-[300px] flex-col items-center justify-center px-4 py-8 text-center"
+              >
+                <span className="grid h-16 w-16 place-items-center rounded-full bg-green-100 text-green-700">
+                  <CheckCircle2 size={35} />
+                </span>
+
+                <h3 className="mt-4 text-xl font-black text-green-800">
+                  Registration Submitted!
+                </h3>
+
+                <p className="mt-2 max-w-md text-sm leading-6 text-slate-600">
+                  {formStatus.message}
+                </p>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setFormStatus({ type: "", message: "" })
+                  }
+                  className="mt-5 rounded-full bg-green-700 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-green-800"
+                >
+                  Register Another Store
+                </button>
+              </div>
+            ) : (
+              <>
+                <div className="mb-4">
+                  <h3 className="text-lg font-black text-slate-900">
+                    Store Registration
                   </h3>
 
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <Field
-                      label="Store Name"
-                      name="storeName"
-                      value={form.storeName}
-                      onChange={updateField}
-                      placeholder="Your store name"
-                      required
-                    />
+                  <p className="mt-1 text-xs text-slate-500">
+                    Fields marked with * are required.
+                  </p>
+                </div>
 
-                    <Field
-                      label="Owner Name"
-                      name="ownerName"
-                      value={form.ownerName}
-                      onChange={updateField}
-                      placeholder="Your full name"
-                      required
-                    />
-
-                    <Field
-                      label="Email Address"
-                      name="email"
-                      type="email"
-                      value={form.email}
-                      onChange={updateField}
-                      placeholder="you@example.com"
-                      required
-                    />
-
-                    <Field
-                      label="Phone Number"
-                      name="phone"
-                      type="tel"
-                      value={form.phone}
-                      onChange={updateField}
-                      placeholder="+91 XXXXX XXXXX"
-                      required
-                    />
+                {formStatus.type === "error" && (
+                  <div
+                    role="alert"
+                    className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-3 text-xs leading-5 text-red-700 sm:text-sm"
+                  >
+                    {formStatus.message}
                   </div>
+                )}
 
-                  <div className="mt-6">
-                    <label className="text-sm font-bold text-slate-700">
-                      Store Category *
-                    </label>
-
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {CATEGORIES.map((category) => {
-                        const selected =
-                          form.categories.includes(category);
-
-                        return (
-                          <button
-                            key={category}
-                            type="button"
-                            aria-pressed={selected}
-                            onClick={() => toggleCategory(category)}
-                            className={`rounded-xl border px-3 py-2.5 text-sm font-semibold transition ${
-                              selected
-                                ? "border-green-600 bg-green-600 text-white shadow-sm"
-                                : "border-slate-200 bg-white text-slate-700 hover:border-green-400 hover:bg-green-50"
-                            }`}
-                          >
-                            {category}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="mt-6">
-                    <label
-                      htmlFor="address"
-                      className="mb-2 block text-sm font-bold text-slate-700"
-                    >
-                      Store Address *
-                    </label>
-                    <textarea
-                      id="address"
-                      name="address"
-                      value={form.address}
-                      onChange={updateField}
-                      placeholder="Complete store address"
-                      rows={3}
-                      required
-                      className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-green-500 focus:ring-4 focus:ring-green-100"
-                    />
-                  </div>
-
-                  <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3">
-                    <Field
-                      label="City"
-                      name="city"
-                      value={form.city}
-                      onChange={updateField}
-                      placeholder="City"
-                      required
-                    />
-
-                    <Field
-                      label="State"
-                      name="state"
-                      value={form.state}
-                      onChange={updateField}
-                      placeholder="State"
-                      required
-                    />
-
-                    <Field
-                      label="Pincode"
-                      name="pincode"
-                      value={form.pincode}
-                      onChange={updateField}
-                      placeholder="Pincode"
-                      required
-                    />
-                  </div>
-
-                  <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                    <Field
-                      label="Service Radius (km)"
-                      name="radius"
-                      type="number"
-                      value={form.radius}
-                      onChange={updateField}
-                      min="1"
-                      required
-                    />
+                <form
+                  onSubmit={handleSubmit}
+                  className="space-y-3.5"
+                >
+                  <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+                    {/* Store name */}
 
                     <div>
                       <label
-                        htmlFor="franchiseOwner"
-                        className="mb-2 block text-sm font-bold text-slate-700"
+                        htmlFor="storeName"
+                        className="mb-1.5 block text-[11px] font-extrabold text-slate-800 sm:text-xs"
                       >
-                        Franchise Owner *
+                        Store Name <span className="text-red-600">*</span>
                       </label>
-                      <select
-                        id="franchiseOwner"
-                        name="franchiseOwner"
-                        value={form.franchiseOwner}
-                        onChange={updateField}
+
+                      <input
+                        id="storeName"
+                        name="storeName"
+                        type="text"
+                        value={formData.storeName}
+                        onChange={handleChange}
+                        placeholder="Enter your store name"
+                        autoComplete="organization"
+                        maxLength={150}
                         required
-                        className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100"
-                      >
-                        <option value="">Select owner</option>
-                        <option value="Bhaskar Rao">Bhaskar Rao</option>
-                      </select>
+                        className="w-full rounded-lg border border-slate-200 bg-[#fbfcfd] px-3 py-2.5 text-xs outline-none transition placeholder:text-slate-400 focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 sm:text-sm"
+                      />
                     </div>
 
-                    <Field
-                      label="GST Number"
-                      name="gst"
-                      value={form.gst}
-                      onChange={updateField}
-                      placeholder="GST number"
-                    />
+                    {/* Owner name */}
 
-                    <Field
-                      label="FSSAI Number"
-                      name="fssai"
-                      value={form.fssai}
-                      onChange={updateField}
-                      placeholder="FSSAI license number"
-                    />
+                    <div>
+                      <label
+                        htmlFor="ownerName"
+                        className="mb-1.5 block text-[11px] font-extrabold text-slate-800 sm:text-xs"
+                      >
+                        Owner Name <span className="text-red-600">*</span>
+                      </label>
+
+                      <input
+                        id="ownerName"
+                        name="ownerName"
+                        type="text"
+                        value={formData.ownerName}
+                        onChange={handleChange}
+                        placeholder="Enter owner name"
+                        autoComplete="name"
+                        maxLength={100}
+                        required
+                        className="w-full rounded-lg border border-slate-200 bg-[#fbfcfd] px-3 py-2.5 text-xs outline-none transition placeholder:text-slate-400 focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 sm:text-sm"
+                      />
+                    </div>
+
+                    {/* Phone */}
+
+                    <div>
+                      <label
+                        htmlFor="phone"
+                        className="mb-1.5 block text-[11px] font-extrabold text-slate-800 sm:text-xs"
+                      >
+                        Phone Number <span className="text-red-600">*</span>
+                      </label>
+
+                      <input
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        placeholder="10-digit mobile number"
+                        autoComplete="tel"
+                        inputMode="numeric"
+                        pattern="[6-9][0-9]{9}"
+                        title="Enter a valid 10-digit Indian mobile number"
+                        maxLength={10}
+                        required
+                        className="w-full rounded-lg border border-slate-200 bg-[#fbfcfd] px-3 py-2.5 text-xs outline-none transition placeholder:text-slate-400 focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 sm:text-sm"
+                      />
+                    </div>
+
+                    {/* Email */}
+
+                    <div className="sm:col-span-2 lg:col-span-2">
+                      <label
+                        htmlFor="email"
+                        className="mb-1.5 block text-[11px] font-extrabold text-slate-800 sm:text-xs"
+                      >
+                        Email Address <span className="text-red-600">*</span>
+                      </label>
+
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="Enter your email address"
+                        autoComplete="email"
+                        maxLength={254}
+                        required
+                        className="w-full rounded-lg border border-slate-200 bg-[#fbfcfd] px-3 py-2.5 text-xs outline-none transition placeholder:text-slate-400 focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 sm:text-sm"
+                      />
+                    </div>
+
+                    {/* Store type */}
+
+                    <div>
+                      <label
+                        htmlFor="storeType"
+                        className="mb-1.5 block text-[11px] font-extrabold text-slate-800 sm:text-xs"
+                      >
+                        Store Type <span className="text-red-600">*</span>
+                      </label>
+
+                      <select
+                        id="storeType"
+                        name="storeType"
+                        value={formData.storeType}
+                        onChange={handleChange}
+                        required
+                        className="w-full rounded-lg border border-slate-200 bg-[#fbfcfd] px-3 py-2.5 text-xs text-slate-700 outline-none transition focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 sm:text-sm"
+                      >
+                        <option value="" disabled>
+                          Select store type
+                        </option>
+                        <option value="Grocery Store">Grocery Store</option>
+                        <option value="Supermarket">Supermarket</option>
+                        <option value="Organic Food Store">
+                          Organic Food Store
+                        </option>
+                        <option value="Meat Shop">Meat Shop</option>
+                        <option value="Dairy Store">Dairy Store</option>
+                        <option value="Health Food Store">
+                          Health Food Store
+                        </option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
                   </div>
-                </div>
 
-                {/* Right column: location */}
-                <div>
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <h3 className="flex items-center gap-2 font-extrabold text-[#173b27]">
-                      <MapPin size={19} className="text-green-600" />
-                      Your Location
-                    </h3>
+                  {/* Message */}
 
-                    <button
-                      type="button"
-                      onClick={useMyLocation}
-                      className="inline-flex items-center gap-2 rounded-lg border border-green-200 px-3 py-2 text-xs font-bold text-green-800 transition hover:bg-green-50"
+                  <div>
+                    <label
+                      htmlFor="message"
+                      className="mb-1.5 block text-[11px] font-extrabold text-slate-800 sm:text-xs"
                     >
-                      <Navigation size={15} />
-                      Use My Location
-                    </button>
-                  </div>
+                      Message (Optional)
+                    </label>
 
-                  <p className="mt-2 text-sm leading-6 text-slate-500">
-                    Enter your address or city to preview the area.
-                    Location access is optional.
-                  </p>
-
-                  <div className="mt-4 h-[260px] overflow-hidden rounded-2xl border border-green-100 bg-[#f2f7ec] sm:h-[320px]">
-                    <iframe
-                      key={mapQuery}
-                      title="Store location map"
-                      src={`https://maps.google.com/maps?q=${mapQuery}&output=embed`}
-                      className="h-full w-full border-0"
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      placeholder="Tell us about your store or products"
+                      rows={3}
+                      maxLength={1000}
+                      className="min-h-20 w-full resize-y rounded-lg border border-slate-200 bg-[#fbfcfd] px-3 py-2.5 text-xs outline-none transition placeholder:text-slate-400 focus:border-green-600 focus:bg-white focus:ring-2 focus:ring-green-100 sm:text-sm"
                     />
                   </div>
 
-                  <div className="mt-4 rounded-2xl border border-green-100 bg-green-50 p-5">
-                    <h4 className="flex items-center gap-2 font-bold text-green-900">
-                      <MapPin size={18} />
-                      Location Details
-                    </h4>
+                  {/* Submit */}
 
-                    <p className="mt-3 break-words text-sm leading-6 text-green-800">
-                      {location
-                        ? `Coordinates: ${location}`
-                        : form.city || form.address
-                          ? `${form.address ? `${form.address}, ` : ""}${form.city}${form.state ? `, ${form.state}` : ""}`
-                          : "Enter your store address and city to add location details."}
-                    </p>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="group flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-green-700 to-green-800 px-5 py-3 text-xs font-extrabold text-white shadow-sm transition hover:from-green-800 hover:to-green-900 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70 sm:text-sm"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <LoaderCircle
+                          size={17}
+                          className="animate-spin"
+                        />
+                        Submitting Registration...
+                      </>
+                    ) : (
+                      <>
+                        Submit Registration
+                        <ArrowRight
+                          size={17}
+                          className="transition-transform group-hover:translate-x-1"
+                        />
+                      </>
+                    )}
+                  </button>
 
-                    <p className="mt-2 text-xs leading-5 text-green-700">
-                      {location
-                        ? "Location coordinates captured by your browser."
-                        : "Map preview is for reference. Location has not been independently verified."}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {message && (
-                <p
-                  role="status"
-                  className="mt-5 rounded-xl border border-orange-200 bg-orange-50 p-4 text-sm leading-6 text-orange-800"
-                >
-                  {message}
-                </p>
-              )}
-
-              <div className="mt-7 flex flex-col-reverse justify-end gap-3 border-t border-slate-100 pt-5 sm:flex-row">
-                <button
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="rounded-xl border border-slate-200 px-6 py-3 font-bold text-slate-600 transition hover:bg-slate-50"
-                >
-                  Cancel
-                </button>
-
-                <button
-                  type="submit"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-green-700 to-green-600 px-7 py-3 font-bold text-white shadow-md transition hover:from-green-800 hover:to-green-700"
-                >
-                  <Send size={17} />
-                  Submit Application
-                </button>
-              </div>
-            </form>
+                  <p className="text-center text-[10px] leading-5 text-slate-500 sm:text-xs">
+                    By submitting, you agree to be contacted about your
+                    EatProtein store partnership registration.
+                  </p>
+                </form>
+              </>
+            )}
           </div>
         </div>
-      )}
+      </section>
     </main>
-  );
-}
-
-function Field({
-  label,
-  name,
-  value,
-  onChange,
-  placeholder,
-  type = "text",
-  required = false,
-  min,
-}) {
-  return (
-    <div>
-      <label
-        htmlFor={name}
-        className="mb-2 block text-sm font-bold text-slate-700"
-      >
-        {label}
-        {required && " *"}
-      </label>
-
-      <input
-        id={name}
-        name={name}
-        type={type}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        required={required}
-        min={min}
-        className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-green-500 focus:ring-4 focus:ring-green-100"
-      />
-    </div>
   );
 }
