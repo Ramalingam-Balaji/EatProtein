@@ -125,7 +125,7 @@ export default function ProteinPacks() {
                       {pack.features.map((feature) => (
                         <li
                           key={feature}
-                          className="flex items-start gap-2 text-[11px] leading-4 text-gray-700 sm:text-xs"
+                          className="flex items-start gap-2 text-[10px] leading-4 text-gray-700 sm:text-xs"
                         >
                           <CheckCircle2
                             size={14}
